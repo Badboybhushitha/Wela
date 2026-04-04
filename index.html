@@ -21,9 +21,9 @@ header {
 }
 
 .container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   padding: 10px;
 }
 
@@ -34,15 +34,16 @@ header {
   cursor: pointer;
 }
 
-.video-card img {
+.video-card iframe {
   width: 100%;
-  height: 120px;
-  object-fit: cover;
+  height: 180px;
+  border: none;
 }
 
 .video-title {
   padding: 8px;
   font-size: 14px;
+  text-align: center;
 }
 
 /* PLAYER */
@@ -61,7 +62,15 @@ header {
 .ad-box {
   margin: 10px auto;
 }
-
+button {
+  padding: 8px 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
 </style>
 </head>
 
@@ -75,14 +84,11 @@ header {
 <div id="homePage" class="container"></div>
 
 <div id="playerPage">
-
   <button onclick="goBack()">⬅ Back</button>
-
   <h3 id="videoTitle"></h3>
 
   <!-- ADS SECTION -->
   <div class="ad-box">
-
     <script>
       atOptions = {
         'key' : '3811f461a69ce9f73fe20772fe30f2a1',
@@ -93,11 +99,9 @@ header {
       };
     </script>
     <script src="https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js"></script>
-
   </div>
 
   <div class="ad-box">
-
     <script>
       atOptions = {
         'key' : '2195bb045cce62838420c9b2a6e32455',
@@ -108,11 +112,9 @@ header {
       };
     </script>
     <script src="https://www.highperformanceformat.com/2195bb045cce62838420c9b2a6e32455/invoke.js"></script>
-
   </div>
 
   <div class="ad-box">
-
     <script>
       atOptions = {
         'key' : '6bf89ebb4e1e6bffe64d9d95fe6cce70',
@@ -123,11 +125,9 @@ header {
       };
     </script>
     <script src="https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js"></script>
-
   </div>
 
   <div class="ad-box">
-
     <script>
       atOptions = {
         'key' : 'f02391ceb7e8e863beea00f26ec21584',
@@ -138,12 +138,9 @@ header {
       };
     </script>
     <script src="https://www.highperformanceformat.com/f02391ceb7e8e863beea00f26ec21584/invoke.js"></script>
-
   </div>
 
-  <!-- VIDEO -->
   <iframe id="videoPlayer" src="" allowfullscreen></iframe>
-
 </div>
 
 <script>
@@ -151,23 +148,20 @@ header {
 /* =====================
    VIDEOS ADD HERE
 ===================== */
-
 const videos = [
   {
     title: "Video 1",
     video: "https://drive.google.com/file/d/19CK_XAD-OLQoxlXkftP9tKkD7Lzzgtx1/preview",
-    thumbnail: "https://via.placeholder.com/300x150"
+    thumbnail: "https://drive.google.com/file/d/19CK_XAD-OLQoxlXkftP9tKkD7Lzzgtx1/preview"
   },
-  
- {
+  {
     title: "Video 2",
     video: "https://drive.google.com/file/d/1zTs06GBnZTzNMzpWkmjZRulXdZxPn0P3/preview",
-    thumbnail: "https://via.placeholder.com/300x150"
-  } 
+    thumbnail: "https://drive.google.com/file/d/1zTs06GBnZTzNMzpWkmjZRulXdZxPn0P3/preview"
+  }
 ];
 
 /* LOAD VIDEOS */
-
 const container = document.getElementById("homePage");
 
 videos.forEach(v => {
@@ -175,7 +169,7 @@ videos.forEach(v => {
   div.className = "video-card";
 
   div.innerHTML = `
-    <img src="${v.thumbnail}">
+    <iframe src="${v.thumbnail}" frameborder="0" allow="autoplay; encrypted-media"></iframe>
     <div class="video-title">${v.title}</div>
   `;
 
@@ -185,12 +179,9 @@ videos.forEach(v => {
 });
 
 /* OPEN VIDEO */
-
 function openVideo(v) {
-
   document.getElementById("homePage").style.display = "none";
   document.getElementById("playerPage").style.display = "block";
-
   document.getElementById("videoTitle").innerText = v.title;
 
   // 👉 VIDEO LOAD (delay for ad impression)
@@ -200,10 +191,9 @@ function openVideo(v) {
 }
 
 /* BACK */
-
 function goBack(){
   document.getElementById("playerPage").style.display = "none";
-  document.getElementById("homePage").style.display = "grid";
+  document.getElementById("homePage").style.display = "flex";
 }
 
 </script>
