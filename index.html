@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Video Site</title>
+<style>
+body {
+  font-family: Arial;
+  background: #111;
+  color: #fff;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+h1 { margin: 20px 0; }
+.video-thumb {
+  display: inline-block;
+  margin: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+.video-thumb img {
+  width: 200px;
+  height: 120px;
+  border-radius: 5px;
+}
+.ads {
+  margin: 15px;
+}
+.unlock-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background: blue;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+iframe {
+  width: 80%;
+  height: 450px;
+  display: none;
+  margin-top: 20px;
+}
+</style>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+// ================= Firebase Config =================
+// 🔹 Replace these values with YOUR Firebase project details
+const firebaseConfig = {
+  apiKey: "AIzaSyAF700PPsAnPCO2BWTEpmsdxnjKj2y6fZw",          // <-- Replace here
+  authDomain: "wela-a2007.firebaseapp.com", // <-- Replace here
+  projectId: "wela-a2007",             // <-- Replace here
+  storageBucket: "wela-a2007.firebasestorage.app", // <-- Replace here
+  messagingSenderId: "755638234674",      // <-- Replace here
+  appId: "1:755638234674:web:8b75bbbcc33e6211cd962b"                      // <-- Replace here
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+</script>
+
+</head>
+<body>
+
+<h1>My Video Site</h1>
+
+<!-- Home Page -->
+<div id="homePage">
+  <div id="videoContainer"></div>
+</div>
+
+<!-- Video Unlock Section -->
+<div id="videoPage" style="display:none;">
+  <h1>Watch Video</h1>
+  <p>Watch the ads to unlock the video!</p>
+
+  <!-- Ads placeholders -->
+  <div class="ads" id="ads1">[Paste Addstera Ad 1 code here]</div> <!-- <-- Replace here -->
+  <div class="ads" id="ads2">[Paste Addstera Ad 2 code here]</div> <!-- <-- Replace here -->
+  <div class="ads" id="ads3">[Paste Addstera Ad 3 code here]</div> <!-- <-- Replace here -->
+
+  <button class="unlock-btn" id="unlockBtn">Unlock Video</button>
+  <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
+  <br>
+  <button class="unlock-btn" onclick="backHome()">Back to Home</button>
+</div>
+
+<script>
+// ========== Fetch Videos and Display Thumbnails ==========
+const container = document.getElementById('videoContainer');
+let currentVideoId = null;
+
+db.collection("videos").get().then((querySnapshot) => {
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    const div = document.createElement('div');
+    div.className = 'video-thumb';
+    div.innerHTML = `<img src="${data.thumbnail}" alt="${data.title}"><p>${data.title}</p>`;
+    div.onclick = () => { openVideo(doc.id); };
+    container.appendChild(div);
+  });
+});
+
+// ========== Open Video Page ==========
+function openVideo(videoId) {
+  currentVideoId = videoId;
+  document.getElementById('homePage').style.display = 'none';
+  document.getElementById('videoPage').style.display = 'block';
+}
+
+// ========== Unlock Video ==========
+document.getElementById('unlockBtn').onclick = function() {
+  if(!currentVideoId) return;
+  db.collection("videos").doc(currentVideoId).get().then((doc) => {
+    if(doc.exists) {
+      const data = doc.data();
+      const iframe = document.getElementById('videoFrame');
+      iframe.src = data.driveLink; // <-- Replace with your Google Drive preview link in Firebase
+      iframe.style.display = 'block';
+      document.querySelectorAll('.ads').forEach(ad => ad.style.display = 'none');
+      document.getElementById('unlockBtn').style.display = 'none';
+    }
+  });
+}
+
+// ========== Back to Home ==========
+function backHome() {
+  document.getElementById('videoPage').style.display = 'none';
+  document.getElementById('homePage').style.display = 'block';
+  document.getElementById('videoFrame').style.display = 'none';
+  document.getElementById('unlockBtn').style.display = 'inline-block';
+  document.querySelectorAll('.ads').forEach(ad => ad.style.display = 'block');
+}
+</script>
+
+</body>
+</html>
