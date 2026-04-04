@@ -42,34 +42,36 @@ header {
 
 .video-title {
   padding: 8px;
-  font-size: 14px;
   text-align: center;
 }
 
-/* PLAYER */
-#playerPage {
+/* PAGES */
+#homePage, #adPage, #playerPage {
   display: none;
-  text-align: center;
+}
+
+#homePage {
+  display: flex;
+}
+
+/* BUTTON */
+button {
+  padding: 10px;
+  margin: 10px;
+  background: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.ad-box {
+  margin: 10px auto;
 }
 
 #videoPlayer {
   width: 100%;
   height: 220px;
-  margin-top: 10px;
-}
-
-/* ADS */
-.ad-box {
-  margin: 10px auto;
-}
-button {
-  padding: 8px 15px;
-  margin: 10px 0;
-  cursor: pointer;
-  background-color: #111;
-  color: white;
-  border: none;
-  border-radius: 5px;
 }
 </style>
 </head>
@@ -78,75 +80,79 @@ button {
 
 <header>🔥 VIDEO APP 🔥</header>
 
-<!-- TOP POPUNDER ADS -->
-<script src="https://pl29058726.profitablecpmratenetwork.com/30/72/2c/30722c1ace3c1961e8a5f50325074c57.js"></script>
-
+<!-- HOME -->
 <div id="homePage" class="container"></div>
 
-<div id="playerPage">
-  <button onclick="goBack()">⬅ Back</button>
-  <h3 id="videoTitle"></h3>
+<!-- AD PAGE -->
+<div id="adPage" style="text-align:center;">
+<h3>👉 Ads බලලා video unlock කරන්න</h3>
 
-  <!-- ADS SECTION -->
-  <div class="ad-box">
-    <script>
-      atOptions = {
-        'key' : '3811f461a69ce9f73fe20772fe30f2a1',
-        'format' : 'iframe',
-        'height' : 60,
-        'width' : 468,
-        'params' : {}
-      };
-    </script>
-    <script src="https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js"></script>
-  </div>
+<div class="ad-box">
+<script>
+atOptions = {
+'key' : '3811f461a69ce9f73fe20772fe30f2a1',
+'format' : 'iframe',
+'height' : 60,
+'width' : 468,
+'params' : {}
+};
+</script>
+<script src="https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js"></script>
+</div>
 
-  <div class="ad-box">
-    <script>
-      atOptions = {
-        'key' : '2195bb045cce62838420c9b2a6e32455',
-        'format' : 'iframe',
-        'height' : 250,
-        'width' : 300,
-        'params' : {}
-      };
-    </script>
-    <script src="https://www.highperformanceformat.com/2195bb045cce62838420c9b2a6e32455/invoke.js"></script>
-  </div>
+<div class="ad-box">
+<script>
+atOptions = {
+'key' : '2195bb045cce62838420c9b2a6e32455',
+'format' : 'iframe',
+'height' : 250,
+'width' : 300,
+'params' : {}
+};
+</script>
+<script src="https://www.highperformanceformat.com/2195bb045cce62838420c9b2a6e32455/invoke.js"></script>
+</div>
 
-  <div class="ad-box">
-    <script>
-      atOptions = {
-        'key' : '6bf89ebb4e1e6bffe64d9d95fe6cce70',
-        'format' : 'iframe',
-        'height' : 300,
-        'width' : 160,
-        'params' : {}
-      };
-    </script>
-    <script src="https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js"></script>
-  </div>
+<div class="ad-box">
+<script>
+atOptions = {
+'key' : '6bf89ebb4e1e6bffe64d9d95fe6cce70',
+'format' : 'iframe',
+'height' : 300,
+'width' : 160,
+'params' : {}
+};
+</script>
+<script src="https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js"></script>
+</div>
 
-  <div class="ad-box">
-    <script>
-      atOptions = {
-        'key' : 'f02391ceb7e8e863beea00f26ec21584',
-        'format' : 'iframe',
-        'height' : 600,
-        'width' : 160,
-        'params' : {}
-      };
-    </script>
-    <script src="https://www.highperformanceformat.com/f02391ceb7e8e863beea00f26ec21584/invoke.js"></script>
-  </div>
+<div class="ad-box">
+<script>
+atOptions = {
+'key' : 'f02391ceb7e8e863beea00f26ec21584',
+'format' : 'iframe',
+'height' : 600,
+'width' : 160,
+'params' : {}
+};
+</script>
+<script src="https://www.highperformanceformat.com/f02391ceb7e8e863beea00f26ec21584/invoke.js"></script>
+</div>
 
-  <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+<button id="watchBtn" disabled>⏳ Wait 5 sec...</button>
+</div>
+
+<!-- PLAYER PAGE -->
+<div id="playerPage" style="text-align:center;">
+<button onclick="goHome()">⬅ Back</button>
+<h3 id="videoTitle"></h3>
+<iframe id="videoPlayer" src="" allowfullscreen></iframe>
 </div>
 
 <script>
 
 /* =====================
-   VIDEOS ADD HERE
+   VIDEO LIST
 ===================== */
 const videos = [
   {
@@ -161,39 +167,54 @@ const videos = [
   }
 ];
 
+/* DOM ELEMENTS */
+const home = document.getElementById("homePage");
+const adPage = document.getElementById("adPage");
+const playerPage = document.getElementById("playerPage");
+
+let currentVideo = "";
+
 /* LOAD VIDEOS */
-const container = document.getElementById("homePage");
-
 videos.forEach(v => {
-  const div = document.createElement("div");
+  let div = document.createElement("div");
   div.className = "video-card";
-
   div.innerHTML = `
     <iframe src="${v.thumbnail}" frameborder="0" allow="autoplay; encrypted-media"></iframe>
     <div class="video-title">${v.title}</div>
   `;
-
-  div.onclick = () => openVideo(v);
-
-  container.appendChild(div);
+  div.onclick = () => openAdPage(v);
+  home.appendChild(div);
 });
 
-/* OPEN VIDEO */
-function openVideo(v) {
-  document.getElementById("homePage").style.display = "none";
-  document.getElementById("playerPage").style.display = "block";
-  document.getElementById("videoTitle").innerText = v.title;
+/* OPEN AD PAGE */
+function openAdPage(v){
+  currentVideo = v.video;
+  home.style.display = "none";
+  adPage.style.display = "block";
 
-  // 👉 VIDEO LOAD (delay for ad impression)
-  setTimeout(() => {
-    document.getElementById("videoPlayer").src = v.video;
-  }, 3000);
+  let btn = document.getElementById("watchBtn");
+  btn.disabled = true;
+  btn.innerText = "⏳ Wait 5 sec...";
+
+  setTimeout(()=>{
+    btn.disabled = false;
+    btn.innerText = "▶ Watch Video";
+    btn.onclick = playVideo;
+  },5000);
 }
 
-/* BACK */
-function goBack(){
-  document.getElementById("playerPage").style.display = "none";
-  document.getElementById("homePage").style.display = "flex";
+/* PLAY VIDEO */
+function playVideo(){
+  adPage.style.display = "none";
+  playerPage.style.display = "block";
+  document.getElementById("videoPlayer").src = currentVideo;
+  document.getElementById("videoTitle").innerText = videos.find(v=>v.video===currentVideo).title;
+}
+
+/* GO BACK */
+function goHome(){
+  playerPage.style.display = "none";
+  home.style.display = "flex";
 }
 
 </script>
