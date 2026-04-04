@@ -9,7 +9,7 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: linear-gradient(135deg, #000000, #1a1a1a);
+  background: linear-gradient(135deg, #000, #1a1a1a);
   color: white;
 }
 
@@ -45,6 +45,7 @@ header {
   font-size: 14px;
 }
 
+/* PLAYER */
 #playerPage {
   display: none;
   text-align: center;
@@ -53,58 +54,102 @@ header {
 #videoPlayer {
   width: 100%;
   height: 220px;
+  margin-top: 10px;
 }
 
-button {
-  padding: 10px;
-  margin: 5px;
-  border: none;
-  background: red;
-  color: white;
-  cursor: pointer;
+/* ADS */
+.ad-box {
+  margin: 10px auto;
 }
 
-#progress {
-  margin: 10px;
-  font-size: 16px;
-}
 </style>
-
 </head>
 
 <body>
 
 <header>🔥 VIDEO APP 🔥</header>
 
-<div id="homePage" class="container"></div>
-    <script>
-  atOptions = {
-    'key' : '3811f461a69ce9f73fe20772fe30f2a1',
-    'format' : 'iframe',
-    'height' : 60,
-    'width' : 468,
-    'params' : {}
-  };
-</script>
-<script src="https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js"></script>
+<!-- TOP POPUNDER ADS -->
+<script src="https://pl29058726.profitablecpmratenetwork.com/30/72/2c/30722c1ace3c1961e8a5f50325074c57.js"></script>
 
+<div id="homePage" class="container"></div>
 
 <div id="playerPage">
+
   <button onclick="goBack()">⬅ Back</button>
 
   <h3 id="videoTitle"></h3>
 
-  <div id="progress">Ads clicked: 0 / 3</div>
+  <!-- ADS SECTION -->
+  <div class="ad-box">
 
-  <button onclick="playAd()">▶ Watch Ad</button>
+    <script>
+      atOptions = {
+        'key' : '3811f461a69ce9f73fe20772fe30f2a1',
+        'format' : 'iframe',
+        'height' : 60,
+        'width' : 468,
+        'params' : {}
+      };
+    </script>
+    <script src="https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js"></script>
 
+  </div>
+
+  <div class="ad-box">
+
+    <script>
+      atOptions = {
+        'key' : '2195bb045cce62838420c9b2a6e32455',
+        'format' : 'iframe',
+        'height' : 250,
+        'width' : 300,
+        'params' : {}
+      };
+    </script>
+    <script src="https://www.highperformanceformat.com/2195bb045cce62838420c9b2a6e32455/invoke.js"></script>
+
+  </div>
+
+  <div class="ad-box">
+
+    <script>
+      atOptions = {
+        'key' : '6bf89ebb4e1e6bffe64d9d95fe6cce70',
+        'format' : 'iframe',
+        'height' : 300,
+        'width' : 160,
+        'params' : {}
+      };
+    </script>
+    <script src="https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js"></script>
+
+  </div>
+
+  <div class="ad-box">
+
+    <script>
+      atOptions = {
+        'key' : 'f02391ceb7e8e863beea00f26ec21584',
+        'format' : 'iframe',
+        'height' : 600,
+        'width' : 160,
+        'params' : {}
+      };
+    </script>
+    <script src="https://www.highperformanceformat.com/f02391ceb7e8e863beea00f26ec21584/invoke.js"></script>
+
+  </div>
+
+  <!-- VIDEO -->
   <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+
 </div>
 
 <script>
 
 /* =====================
-   👉 ADD VIDEOS HERE
+   VIDEOS ADD HERE
 ===================== */
 
 const videos = [
@@ -115,9 +160,7 @@ const videos = [
   }
 ];
 
-/* =====================
-   LOAD VIDEOS
-===================== */
+/* LOAD VIDEOS */
 
 const container = document.getElementById("homePage");
 
@@ -135,49 +178,22 @@ videos.forEach(v => {
   container.appendChild(div);
 });
 
-/* =====================
-   VIDEO OPEN
-===================== */
-
-let currentVideo = "";
-let adCount = 0;
+/* OPEN VIDEO */
 
 function openVideo(v) {
-  currentVideo = v.video;
-  adCount = 0;
 
   document.getElementById("homePage").style.display = "none";
   document.getElementById("playerPage").style.display = "block";
 
   document.getElementById("videoTitle").innerText = v.title;
-  updateProgress();
+
+  // 👉 VIDEO LOAD (delay for ad impression)
+  setTimeout(() => {
+    document.getElementById("videoPlayer").src = v.video;
+  }, 3000);
 }
 
-/* =====================
-   ADS SYSTEM
-===================== */
-
-function playAd() {
-
-  // 👉 YOUR ADS LINK HERE
-  window.open("https://your-ad-link.com", "_blank");
-
-  adCount++;
-  updateProgress();
-
-  if(adCount >= 3){
-    document.getElementById("videoPlayer").src = currentVideo;
-  }
-}
-
-function updateProgress(){
-  document.getElementById("progress").innerText =
-    "Ads clicked: " + adCount + " / 3";
-}
-
-/* =====================
-   BACK BUTTON
-===================== */
+/* BACK */
 
 function goBack(){
   document.getElementById("playerPage").style.display = "none";
