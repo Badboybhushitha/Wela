@@ -32,17 +32,20 @@ header {
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
+  position: relative;
 }
 
-.video-card iframe {
+.video-card img {
   width: 100%;
   height: 180px;
-  border: none;
+  object-fit: cover;
+  display: block;
 }
 
 .video-title {
   padding: 8px;
   text-align: center;
+  font-size: 16px;
 }
 
 /* PAGES */
@@ -52,6 +55,7 @@ header {
 
 #homePage {
   display: flex;
+  flex-direction: column;
 }
 
 /* BUTTON */
@@ -80,13 +84,14 @@ button {
 
 <header>🔥 VIDEO APP 🔥</header>
 
-<!-- HOME -->
+<!-- HOME PAGE -->
 <div id="homePage" class="container"></div>
 
 <!-- AD PAGE -->
 <div id="adPage" style="text-align:center;">
 <h3>👉 Ads බලලා video unlock කරන්න</h3>
 
+<!-- ADS -->
 <div class="ad-box">
 <script>
 atOptions = {
@@ -158,12 +163,12 @@ const videos = [
   {
     title: "Video 1",
     video: "https://drive.google.com/file/d/19CK_XAD-OLQoxlXkftP9tKkD7Lzzgtx1/preview",
-    thumbnail: "https://drive.google.com/file/d/19CK_XAD-OLQoxlXkftP9tKkD7Lzzgtx1/preview"
+    thumbnail: "https://via.placeholder.com/300x150?text=Video+1"
   },
   {
     title: "Video 2",
     video: "https://drive.google.com/file/d/1zTs06GBnZTzNMzpWkmjZRulXdZxPn0P3/preview",
-    thumbnail: "https://drive.google.com/file/d/1zTs06GBnZTzNMzpWkmjZRulXdZxPn0P3/preview"
+    thumbnail: "https://via.placeholder.com/300x150?text=Video+2"
   }
 ];
 
@@ -174,12 +179,12 @@ const playerPage = document.getElementById("playerPage");
 
 let currentVideo = "";
 
-/* LOAD VIDEOS */
+/* LOAD VIDEOS - THUMBNAILS ONLY */
 videos.forEach(v => {
   let div = document.createElement("div");
   div.className = "video-card";
   div.innerHTML = `
-    <iframe src="${v.thumbnail}" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+    <img src="${v.thumbnail}" alt="${v.title}">
     <div class="video-title">${v.title}</div>
   `;
   div.onclick = () => openAdPage(v);
