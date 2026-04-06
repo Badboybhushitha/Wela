@@ -3,50 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Video Hub</title>
+<title>Video Hub PRO Ultimate</title>
 <style>
 body {margin:0;font-family:Arial;background:#0d0d0d;color:white;}
 header {padding:15px;text-align:center;font-size:22px;background:#111;}
-
-.container {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:15px;padding:15px;
-}
-
-.video-card {
-  background:#1a1a1a;
-  border-radius:10px;
-  overflow:hidden;
-  cursor:pointer;
-}
-.video-card img {
-  width:100%;height:120px;object-fit:cover;
-}
-
+#searchBar {width:95%;max-width:500px;margin:10px auto;padding:10px;border-radius:5px;border:none;display:block;font-size:16px;}
+.container {display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:15px;padding:15px;}
+.video-card {background:#1a1a1a;border-radius:10px;overflow:hidden;cursor:pointer;transition:transform 0.2s, box-shadow 0.3s;}
+.video-card:hover {transform:scale(1.03);box-shadow:0 0 15px #ff0000;}
+.video-card video {width:100%;height:120px;object-fit:cover;display:block;}
 .video-title {text-align:center;padding:5px;}
 .video-stats {text-align:center;font-size:12px;}
-
 #homePage,#adPage,#playerPage {display:none;}
 #homePage {display:grid;}
-
-button {
-  padding:10px;margin:10px;
-  background:red;color:white;
-  border:none;border-radius:5px;
-  cursor:pointer;
-}
-
-#videoFrame {
-  width:95%;max-width:800px;height:420px;border:none;
-}
-
+button {padding:10px;margin:10px;background:red;color:white;border:none;border-radius:5px;cursor:pointer;transition:0.3s;}
+button:hover {opacity:0.85;}
+#videoFrame {width:95%;max-width:800px;height:420px;border:none;}
 .hidden-ad {display:none;margin:15px auto;}
+@media(max-width:600px){.video-card video{height:100px;}}
 </style>
 </head>
 <body>
 
-<header>🔥 VIDEO HUB 🔥</header>
+<header>🔥 VIDEO HUB PRO Ultimate 🔥</header>
+
+<input type="text" id="searchBar" placeholder="Search videos...">
 
 <!-- HOME -->
 <div id="homePage" class="container"></div>
@@ -54,20 +35,13 @@ button {
 <!-- ADS PAGE -->
 <div id="adPage" style="text-align:center;">
   <h3>👉 Ads 2ක් click කරලා unlock කරන්න</h3>
-
-  <button onclick="showAd1()">📢 Watch Ad 1</button>
-  <button onclick="showAd2()">📢 Watch Ad 2</button>
+  <button id="adBtn1">📢 Watch Ad 1</button>
+  <button id="adBtn2">📢 Watch Ad 2</button>
 
   <!-- AD 1 -->
   <div id="ad1" class="hidden-ad">
     <script>
-      atOptions = {
-        'key' : '3811f461a69ce9f73fe20772fe30f2a1',
-        'format' : 'iframe',
-        'height' : 60,
-        'width' : 468,
-        'params' : {}
-      };
+      atOptions = {'key':'3811f461a69ce9f73fe20772fe30f2a1','format':'iframe','height':60,'width':468,'params':{}};
     </script>
     <script src="https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js"></script>
   </div>
@@ -75,13 +49,7 @@ button {
   <!-- AD 2 -->
   <div id="ad2" class="hidden-ad">
     <script>
-      atOptions = {
-        'key' : '6bf89ebb4e1e6bffe64d9d95fe6cce70',
-        'format' : 'iframe',
-        'height' : 300,
-        'width' : 160,
-        'params' : {}
-      };
+      atOptions = {'key':'6bf89ebb4e1e6bffe64d9d95fe6cce70','format':'iframe','height':300,'width':160,'params':{}};
     </script>
     <script src="https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js"></script>
   </div>
@@ -95,87 +63,100 @@ button {
   <button onclick="goHome()">⬅ Back</button>
   <h3 id="videoTitle"></h3>
   <iframe id="videoFrame" allowfullscreen></iframe>
-  <button onclick="likeVideo()">❤️ Like</button>
-  <div id="likeCount"></div>
+  <div style="margin:10px;">
+    <button onclick="likeVideo()">❤️ Like</button>
+    <span id="likeCount"></span>
+    <span style="margin-left:20px;">👁 <span id="viewCount"></span></span>
+  </div>
 </div>
 
 <script>
-/* VIDEO LIST */
 let videos = [
-  {title:"Video 1",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150"},
-  {title:"Video 2",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150"},
-  {title:"Video 3",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150"}
+  {title:"Video 1",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150?text=Video+1+Frame"},
+  {title:"Video 2",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150?text=Video+2+Frame"},
+  {title:"Video 3",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150?text=Video+3+Frame"}
 ];
 
-const home = document.getElementById("homePage");
-let currentIndex = 0;
+const home=document.getElementById("homePage");
+const searchBar=document.getElementById("searchBar");
+let currentIndex=0;
 
 /* LOCALSTORAGE FOR VIEWS & LIKES */
 function getViews(i){return parseInt(localStorage.getItem("v"+i)||0);}
 function getLikes(i){return parseInt(localStorage.getItem("l"+i)||0);}
 function addView(i){localStorage.setItem("v"+i,getViews(i)+1);}
 function addLike(i){localStorage.setItem("l"+i,getLikes(i)+1);}
+function updateStats(){document.getElementById("likeCount").innerText="❤️ "+getLikes(currentIndex);document.getElementById("viewCount").innerText=getViews(currentIndex);}
 
-/* LOAD VIDEO CARDS */
-function loadVideos(){
+/* LOAD VIDEO CARDS WITH HOVER PREVIEW */
+function loadVideos(filter=""){
   home.innerHTML="";
   videos.forEach((v,i)=>{
-    let div=document.createElement("div");
-    div.className="video-card";
-    div.innerHTML=`
-      <img src="${v.thumbnail}">
-      <div class="video-title">${v.title}</div>
-      <div class="video-stats">👁 ${getViews(i)} | ❤️ ${getLikes(i)}</div>
-    `;
-    div.onclick=()=>openAdPage(i);
-    home.appendChild(div);
+    if(v.title.toLowerCase().includes(filter.toLowerCase())){
+      let div=document.createElement("div");
+      div.className="video-card";
+      div.innerHTML=`
+        <video src="${v.video}" poster="${v.thumbnail}" preload="metadata" muted loop></video>
+        <div class="video-title">${v.title}</div>
+        <div class="video-stats">👁 <span id="v${i}">${getViews(i)}</span> | ❤️ <span id="l${i}">${getLikes(i)}</span></div>
+      `;
+      let videoEl=div.querySelector("video");
+      div.onmouseenter=()=>{videoEl.play(); videoEl.muted=true;}
+      div.onmouseleave=()=>{videoEl.pause(); videoEl.currentTime=0;}
+      div.onclick=()=>openAdPage(i);
+      home.appendChild(div);
+    }
   });
 }
 loadVideos();
+
+/* SEARCH BAR FILTER */
+searchBar.addEventListener("input",()=>{loadVideos(searchBar.value);});
 
 /* OPEN ADS PAGE */
 function openAdPage(i){
   currentIndex=i;
   addView(i);
+  updateStats();
+  document.getElementById("v"+i).innerText=getViews(i);
+  document.getElementById("l"+i).innerText=getLikes(i);
   home.style.display="none";
   adPage.style.display="block";
+
+  /* AUTO CONFIRM ADS PLAY AFTER 1s */
+  setTimeout(()=>{document.getElementById("ad1").style.display="block"; ad1=true; checkUnlock();},1000);
+  setTimeout(()=>{document.getElementById("ad2").style.display="block"; ad2=true; checkUnlock();},2000);
 }
 
 /* ADS BUTTON LOGIC */
-let ad1=false, ad2=false;
-
-function showAd1(){document.getElementById("ad1").style.display="block";ad1=true;checkUnlock();}
-function showAd2(){document.getElementById("ad2").style.display="block";ad2=true;checkUnlock();}
+let ad1=false,ad2=false;
+document.getElementById("adBtn1").onclick=function(){document.getElementById("ad1").style.display="block"; ad1=true; checkUnlock();}
+document.getElementById("adBtn2").onclick=function(){document.getElementById("ad2").style.display="block"; ad2=true; checkUnlock();}
 function checkUnlock(){if(ad1 && ad2){document.getElementById("unlockBtn").disabled=false;}}
 
 /* UNLOCK VIDEO */
 document.getElementById("unlockBtn").onclick=function(){
   adPage.style.display="none";
   playerPage.style.display="block";
-  videoFrame.src=videos[currentIndex].video;
-  videoTitle.innerText=videos[currentIndex].title;
-  updateLikeCount();
+  document.getElementById("videoFrame").src=videos[currentIndex].video;
+  document.getElementById("videoTitle").innerText=videos[currentIndex].title;
+  updateStats();
 }
 
 /* LIKE */
-function likeVideo(){
-  addLike(currentIndex);
-  updateLikeCount();
-}
-function updateLikeCount(){
-  document.getElementById("likeCount").innerText="❤️ "+getLikes(currentIndex);
-}
+function likeVideo(){addLike(currentIndex);updateStats();document.getElementById("l"+currentIndex).innerText=getLikes(currentIndex);}
 
 /* BACK */
 function goHome(){
-  videoFrame.src="";
+  document.getElementById("videoFrame").src="";
   playerPage.style.display="none";
   home.style.display="grid";
-
   ad1=false; ad2=false;
   document.getElementById("unlockBtn").disabled=true;
-  loadVideos();
+  loadVideos(searchBar.value);
+  videos.forEach((v,i)=>{document.getElementById("v"+i) && (document.getElementById("v"+i).innerText=getViews(i));});
 }
 </script>
+
 </body>
 </html>
