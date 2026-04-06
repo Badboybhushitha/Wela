@@ -3,77 +3,76 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 VIDEO APP FULL PRO 🔥</title>
+<title>Video Hub PRO </title>
 <style>
-body {margin:0;font-family:Arial;background:#111;color:white;}
-header {text-align:center;padding:15px;font-size:22px;background:#222;}
-#searchBar {width:90%;padding:8px;margin:10px auto;display:block;border-radius:5px;border:none;}
-.container {display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:10px;}
-.video-card {background:#222;border-radius:10px;overflow:hidden;cursor:pointer;position:relative;transition:transform .2s;}
-.video-card:hover {transform:scale(1.02);}
-.video-card video {width:100%;height:100px;object-fit:cover;display:block;}
-.video-title {padding:5px;text-align:center;font-size:14px;}
-.video-stats {text-align:center;font-size:12px;padding-bottom:5px;}
-#homePage,#adPage,#playerPage{display:none;}
-#homePage{display:grid;}
-button{padding:10px;margin:10px;background:red;color:white;border:none;cursor:pointer;border-radius:5px;}
-#videoPlayer{width:100%;max-width:720px;border-radius:8px;background:#000;outline:none;}
-.like-btn{padding:5px 10px;background:#ff3b3b;color:white;border:none;border-radius:5px;cursor:pointer;margin-top:5px;}
-.like-btn.animate{animation: pop 0.3s ease;}
-@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.5)}100%{transform:scale(1)}}
+body {margin:0;font-family:Arial;background:#0d0d0d;color:white;}
+header {padding:15px;text-align:center;font-size:22px;background:#111;}
+#searchBar {width:95%;max-width:500px;margin:10px auto;padding:10px;border-radius:5px;border:none;display:block;font-size:16px;}
+.container {display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:15px;padding:15px;}
+.video-card {background:#1a1a1a;border-radius:10px;overflow:hidden;cursor:pointer;transition:transform 0.2s, box-shadow 0.3s;}
+.video-card:hover {transform:scale(1.03);box-shadow:0 0 15px #ff0000;}
+.video-card video {width:100%;height:120px;object-fit:cover;display:block;}
+.video-title {text-align:center;padding:5px;}
+.video-stats {text-align:center;font-size:12px;}
+#homePage,#adPage,#playerPage {display:none;}
+#homePage {display:grid;}
+button {padding:10px;margin:10px;background:red;color:white;border:none;border-radius:5px;cursor:pointer;transition:0.3s;}
+button:hover {opacity:0.85;}
+#videoFrame {width:95%;max-width:800px;height:420px;border:none;}
+@media(max-width:600px){.video-card video{height:100px;}}
 </style>
 </head>
 <body>
 
-<header>🔥 VIDEO APP FULL PRO 🔥</header>
+<header>🔥 VIDEO HUB PRO 🔥</header>
+
 <input type="text" id="searchBar" placeholder="Search videos...">
 
-<!-- HOME PAGE -->
+<!-- HOME -->
 <div id="homePage" class="container"></div>
 
 <!-- ADS PAGE -->
 <div id="adPage" style="text-align:center;">
-  <h3>👉 Ads බලලා video unlock කරන්න</h3>
-  <button id="adBtn1">▶ Watch Ad 1</button>
-  <button id="adBtn2">▶ Watch Ad 2</button>
+  <h3>👉 Ads 2ක් click කරලා පසුව unlock button click  කරන්න</h3>
+  <button id="adBtn1">📢 Watch Ad 1</button>
+  <button id="adBtn2">📢 Watch Ad 2</button>
   <br>
-  <button id="unlockBtn" disabled>▶ Unlock Video</button>
+  <button id="unlockBtn" disabled>🔓 Unlock </button>
 </div>
 
-<!-- PLAYER PAGE -->
+<!-- PLAYER -->
 <div id="playerPage" style="text-align:center;">
   <button onclick="goHome()">⬅ Back</button>
   <h3 id="videoTitle"></h3>
-  <iframe id="videoFrame" src="" frameborder="0" width="560" height="340" scrolling="no" allowfullscreen></iframe>
-  <br>
-  <button class="like-btn" id="likeBtn">❤️ Like</button>
+  <iframe id="videoFrame" allowfullscreen></iframe>
+  <div style="margin:10px;">
+    <button onclick="likeVideo()">❤️ Like</button>
+    <span id="likeCount"></span>
+    <span style="margin-left:20px;">👁 <span id="viewCount"></span></span>
+  </div>
 </div>
 
 <script>
-/* VIDEO LIST */
-const videos=[
-  {title:"Video 1",video:"https://www.pornhub.com/embed/69c80044122fe",thumbnail:"https://via.placeholder.com/300x150?text=Video+1",preview:"https://www.pornhub.com/embed/69c80044122fe"},
-  {title:"Video 2",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150?text=Video+2",preview:"https://www.pornhub.com/embed/69c65dc4b156d"},
-  {title:"Video 3",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150?text=Video+3",preview:"https://www.pornhub.com/embed/69c65dc4b156d"}
+let videos = [
+  {title:"Video 1",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150?text=Video+1+Frame"},
+  {title:"Video 2",video:"https://www.pornhub.com/embed/699db237872c1",thumbnail:"https://via.placeholder.com/300x150?text=Video+2+Frame"},
+  {title:"Video 3",video:"https://www.pornhub.com/embed/69cd4dd480148",thumbnail:"https://via.placeholder.com/300x150?text=Video+3+Frame"},
+  {title:"Video 4",video:"https://www.pornhub.com/embed/66ab8e27a93f7",thumbnail:"https://via.placeholder.com/300x150?text=Video+4+Frame"},
+  {title:"Video 5",video:"https://www.pornhub.com/embed/69c80044122fe",thumbnail:"https://via.placeholder.com/300x150?text=Video+5+Frame"}
 ];
 
-/* VIEWS / LIKES STORAGE */
-if(!sessionStorage.getItem("views")) sessionStorage.setItem("views", JSON.stringify(Array(videos.length).fill(0)));
-if(!sessionStorage.getItem("likes")) sessionStorage.setItem("likes", JSON.stringify(Array(videos.length).fill(0)));
-function getViews(i){ return JSON.parse(sessionStorage.getItem("views"))[i]; }
-function getLikes(i){ return JSON.parse(sessionStorage.getItem("likes"))[i]; }
-function addView(i){ let arr=JSON.parse(sessionStorage.getItem("views")); arr[i]++; sessionStorage.setItem("views",JSON.stringify(arr)); }
-function addLike(i){ let arr=JSON.parse(sessionStorage.getItem("likes")); arr[i]++; sessionStorage.setItem("likes",JSON.stringify(arr)); }
-
-/* DOM ELEMENTS */
 const home=document.getElementById("homePage");
-const adPage=document.getElementById("adPage");
-const playerPage=document.getElementById("playerPage");
 const searchBar=document.getElementById("searchBar");
-const likeBtn=document.getElementById("likeBtn");
 let currentIndex=0;
 
-/* LOAD VIDEO CARDS WITH HOVER PREVIEW */
+/* LOCALSTORAGE FOR VIEWS & LIKES */
+function getViews(i){return parseInt(localStorage.getItem("v"+i)||0);}
+function getLikes(i){return parseInt(localStorage.getItem("l"+i)||0);}
+function addView(i){localStorage.setItem("v"+i,getViews(i)+1);}
+function addLike(i){localStorage.setItem("l"+i,getLikes(i)+1);}
+function updateStats(){document.getElementById("likeCount").innerText="❤️ "+getLikes(currentIndex);document.getElementById("viewCount").innerText=getViews(currentIndex);}
+
+/* LOAD VIDEO CARDS */
 function loadVideos(filter=""){
   home.innerHTML="";
   videos.forEach((v,i)=>{
@@ -81,12 +80,12 @@ function loadVideos(filter=""){
       let div=document.createElement("div");
       div.className="video-card";
       div.innerHTML=`
-        <video src="${v.preview}" poster="${v.thumbnail}" preload="metadata" muted loop></video>
+        <video src="${v.video}" poster="${v.thumbnail}" preload="metadata" muted loop></video>
         <div class="video-title">${v.title}</div>
         <div class="video-stats">👁 <span id="v${i}">${getViews(i)}</span> | ❤️ <span id="l${i}">${getLikes(i)}</span></div>
       `;
       let videoEl=div.querySelector("video");
-      div.onmouseenter=()=>{videoEl.play();}
+      div.onmouseenter=()=>{videoEl.play(); videoEl.muted=true;}
       div.onmouseleave=()=>{videoEl.pause(); videoEl.currentTime=0;}
       div.onclick=()=>openAdPage(i);
       home.appendChild(div);
@@ -94,21 +93,22 @@ function loadVideos(filter=""){
   });
 }
 loadVideos();
+
+/* SEARCH BAR FILTER */
 searchBar.addEventListener("input",()=>{loadVideos(searchBar.value);});
 
 /* OPEN ADS PAGE */
 function openAdPage(i){
   currentIndex=i;
   addView(i);
+  updateStats();
   document.getElementById("v"+i).innerText=getViews(i);
   document.getElementById("l"+i).innerText=getLikes(i);
   home.style.display="none";
   adPage.style.display="block";
-  ad1=false; ad2=false;
-  document.getElementById("unlockBtn").disabled=true;
 }
 
-/* ADS BUTTON LOGIC */
+/* ADS BUTTON LOGIC - OPEN ORIGINAL SITES */
 let ad1=false,ad2=false;
 document.getElementById("adBtn1").onclick=function(){
   window.open("https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js","_blank");
@@ -118,7 +118,7 @@ document.getElementById("adBtn2").onclick=function(){
   window.open("https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js","_blank");
   ad2=true; checkUnlock();
 }
-function checkUnlock(){ if(ad1 && ad2) document.getElementById("unlockBtn").disabled=false; }
+function checkUnlock(){if(ad1 && ad2){document.getElementById("unlockBtn").disabled=false;}}
 
 /* UNLOCK VIDEO */
 document.getElementById("unlockBtn").onclick=function(){
@@ -126,15 +126,11 @@ document.getElementById("unlockBtn").onclick=function(){
   playerPage.style.display="block";
   document.getElementById("videoFrame").src=videos[currentIndex].video;
   document.getElementById("videoTitle").innerText=videos[currentIndex].title;
+  updateStats();
 }
 
-/* LIKE BUTTON ANIMATION */
-likeBtn.onclick=function(){
-  addLike(currentIndex);
-  document.getElementById("l"+currentIndex).innerText=getLikes(currentIndex);
-  likeBtn.classList.add("animate");
-  setTimeout(()=>{likeBtn.classList.remove("animate");},300);
-}
+/* LIKE */
+function likeVideo(){addLike(currentIndex);updateStats();document.getElementById("l"+currentIndex).innerText=getLikes(currentIndex);}
 
 /* BACK */
 function goHome(){
@@ -144,8 +140,9 @@ function goHome(){
   ad1=false; ad2=false;
   document.getElementById("unlockBtn").disabled=true;
   loadVideos(searchBar.value);
-  videos.forEach((v,i)=>{ document.getElementById("v"+i) && (document.getElementById("v"+i).innerText=getViews(i)); });
+  videos.forEach((v,i)=>{document.getElementById("v"+i) && (document.getElementById("v"+i).innerText=getViews(i));});
 }
 </script>
+
 </body>
 </html>
