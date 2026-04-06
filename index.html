@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Video Hub</title>
-
 <style>
 body {margin:0;font-family:Arial;background:#0d0d0d;color:white;}
 header {padding:15px;text-align:center;font-size:22px;background:#111;}
@@ -45,7 +44,6 @@ button {
 .hidden-ad {display:none;margin:15px auto;}
 </style>
 </head>
-
 <body>
 
 <header>🔥 VIDEO HUB 🔥</header>
@@ -89,7 +87,6 @@ button {
   </div>
 
   <br>
-
   <button id="unlockBtn" disabled>🔓 Unlock Video</button>
 </div>
 
@@ -98,28 +95,28 @@ button {
   <button onclick="goHome()">⬅ Back</button>
   <h3 id="videoTitle"></h3>
   <iframe id="videoFrame" allowfullscreen></iframe>
+  <button onclick="likeVideo()">❤️ Like</button>
+  <div id="likeCount"></div>
 </div>
 
 <script>
-
-/* VIDEOS */
-const videos = [
-  {
-    title:"Video 1",
-    video:"https://www.pornhub.com/embed/69c65dc4b156d",
-    thumbnail:"https://via.placeholder.com/300x150"
-  },
-  {
-    title:"Video 2",
-    video:"https://www.pornhub.com/embed/69c65dc4b156d",
-    thumbnail:"https://via.placeholder.com/300x150"
-  }
+/* VIDEO LIST */
+let videos = [
+  {title:"Video 1",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150"},
+  {title:"Video 2",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150"},
+  {title:"Video 3",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150"}
 ];
 
 const home = document.getElementById("homePage");
 let currentIndex = 0;
 
-/* LOAD VIDEOS */
+/* LOCALSTORAGE FOR VIEWS & LIKES */
+function getViews(i){return parseInt(localStorage.getItem("v"+i)||0);}
+function getLikes(i){return parseInt(localStorage.getItem("l"+i)||0);}
+function addView(i){localStorage.setItem("v"+i,getViews(i)+1);}
+function addLike(i){localStorage.setItem("l"+i,getLikes(i)+1);}
+
+/* LOAD VIDEO CARDS */
 function loadVideos(){
   home.innerHTML="";
   videos.forEach((v,i)=>{
@@ -128,6 +125,7 @@ function loadVideos(){
     div.innerHTML=`
       <img src="${v.thumbnail}">
       <div class="video-title">${v.title}</div>
+      <div class="video-stats">👁 ${getViews(i)} | ❤️ ${getLikes(i)}</div>
     `;
     div.onclick=()=>openAdPage(i);
     home.appendChild(div);
@@ -138,38 +136,34 @@ loadVideos();
 /* OPEN ADS PAGE */
 function openAdPage(i){
   currentIndex=i;
+  addView(i);
   home.style.display="none";
   adPage.style.display="block";
 }
 
-/* ADS LOGIC */
+/* ADS BUTTON LOGIC */
 let ad1=false, ad2=false;
 
-function showAd1(){
-  document.getElementById("ad1").style.display="block";
-  ad1=true;
-  checkUnlock();
-}
+function showAd1(){document.getElementById("ad1").style.display="block";ad1=true;checkUnlock();}
+function showAd2(){document.getElementById("ad2").style.display="block";ad2=true;checkUnlock();}
+function checkUnlock(){if(ad1 && ad2){document.getElementById("unlockBtn").disabled=false;}}
 
-function showAd2(){
-  document.getElementById("ad2").style.display="block";
-  ad2=true;
-  checkUnlock();
-}
-
-function checkUnlock(){
-  if(ad1 && ad2){
-    document.getElementById("unlockBtn").disabled=false;
-  }
-}
-
-/* UNLOCK */
+/* UNLOCK VIDEO */
 document.getElementById("unlockBtn").onclick=function(){
   adPage.style.display="none";
   playerPage.style.display="block";
-
   videoFrame.src=videos[currentIndex].video;
   videoTitle.innerText=videos[currentIndex].title;
+  updateLikeCount();
+}
+
+/* LIKE */
+function likeVideo(){
+  addLike(currentIndex);
+  updateLikeCount();
+}
+function updateLikeCount(){
+  document.getElementById("likeCount").innerText="❤️ "+getLikes(currentIndex);
 }
 
 /* BACK */
@@ -178,12 +172,10 @@ function goHome(){
   playerPage.style.display="none";
   home.style.display="grid";
 
-  ad1=false;
-  ad2=false;
-  unlockBtn.disabled=true;
+  ad1=false; ad2=false;
+  document.getElementById("unlockBtn").disabled=true;
+  loadVideos();
 }
-
 </script>
-
 </body>
 </html>
