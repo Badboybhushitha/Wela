@@ -3,59 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Video App</title>
+<title>🔥 Video Hub</title>
 
 <style>
 body {
   margin: 0;
   font-family: Arial;
-  background: linear-gradient(135deg, #000, #1a1a1a);
+  background: #0d0d0d;
   color: white;
 }
 
 header {
-  text-align: center;
   padding: 15px;
-  font-size: 22px;
+  text-align: center;
+  font-size: 24px;
   background: #111;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+/* SEARCH */
+.search-box {
   padding: 10px;
+  text-align: center;
+}
+.search-box input {
+  width: 90%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
 }
 
+/* GRID */
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 15px;
+  padding: 15px;
+}
+
+/* CARD */
 .video-card {
-  background: #222;
+  background: #1a1a1a;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
-  position: relative;
+  transition: 0.3s;
+}
+.video-card:hover {
+  transform: scale(1.05);
 }
 
 .video-card img {
   width: 100%;
-  height: 180px;
+  height: 120px;
   object-fit: cover;
-  display: block;
 }
 
 .video-title {
-  padding: 8px;
+  padding: 5px;
+  font-size: 14px;
   text-align: center;
-  font-size: 16px;
+}
+
+/* COUNTERS */
+.video-stats {
+  font-size: 12px;
+  text-align: center;
+  padding-bottom: 5px;
 }
 
 /* PAGES */
 #homePage, #adPage, #playerPage {
   display: none;
 }
-
 #homePage {
-  display: flex;
-  flex-direction: column;
+  display: grid;
 }
 
 /* BUTTON */
@@ -65,190 +86,170 @@ button {
   background: red;
   color: white;
   border: none;
-  cursor: pointer;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+/* PLAYER */
+#videoFrame {
+  width: 95%;
+  max-width: 800px;
+  height: 420px;
+  border: none;
+  border-radius: 10px;
 }
 
 .ad-box {
-  margin: 10px auto;
-}
-
-/* VIDEO PLAYER */
-#videoPlayer {
-  width: 100%;
-  max-width: 720px;
-  border-radius: 8px;
-  background: #000;
-  outline: none;
+  margin: 15px auto;
 }
 </style>
 </head>
 
 <body>
 
-<header>🔥 VIDEO APP 🔥</header>
+<header>🔥 VIDEO HUB 🔥</header>
 
-<!-- HOME PAGE -->
+<!-- 🔎 SEARCH BAR -->
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Search videos...">
+</div>
+
+<!-- HOME -->
 <div id="homePage" class="container"></div>
 
 <!-- AD PAGE -->
 <div id="adPage" style="text-align:center;">
   <h3>👉 Ads බලලා video unlock කරන්න</h3>
 
-  <!-- ADS -->
   <div class="ad-box">
     <script>
-    atOptions = {
-      'key' : '3811f461a69ce9f73fe20772fe30f2a1',
-      'format' : 'iframe',
-      'height' : 60,
-      'width' : 468,
-      'params' : {}
-    };
+    atOptions = {'key':'3811f461a69ce9f73fe20772fe30f2a1','format':'iframe','height':60,'width':468};
     </script>
     <script src="https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js"></script>
   </div>
 
   <div class="ad-box">
     <script>
-    atOptions = {
-      'key' : '2195bb045cce62838420c9b2a6e32455',
-      'format' : 'iframe',
-      'height' : 250,
-      'width' : 300,
-      'params' : {}
-    };
+    atOptions = {'key':'2195bb045cce62838420c9b2a6e32455','format':'iframe','height':250,'width':300};
     </script>
     <script src="https://www.highperformanceformat.com/2195bb045cce62838420c9b2a6e32455/invoke.js"></script>
   </div>
 
-  <h3>👉 Ads බලලා video unlock කරන්න</h3>
-
   <div class="ad-box">
     <script>
-    atOptions = {
-      'key' : '6bf89ebb4e1e6bffe64d9d95fe6cce70',
-      'format' : 'iframe',
-      'height' : 300,
-      'width' : 160,
-      'params' : {}
-    };
+    atOptions = {'key':'6bf89ebb4e1e6bffe64d9d95fe6cce70','format':'iframe','height':300,'width':160};
     </script>
     <script src="https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js"></script>
   </div>
 
   <div class="ad-box">
     <script>
-    atOptions = {
-      'key' : 'f02391ceb7e8e863beea00f26ec21584',
-      'format' : 'iframe',
-      'height' : 600,
-      'width' : 160,
-      'params' : {}
-    };
+    atOptions = {'key':'f02391ceb7e8e863beea00f26ec21584','format':'iframe','height':600,'width':160};
     </script>
     <script src="https://www.highperformanceformat.com/f02391ceb7e8e863beea00f26ec21584/invoke.js"></script>
   </div>
 
-  <button id="watchBtn" disabled>⏳ Wait 5 sec...</button>
+  <h3 id="timerText">⏳ Wait 5 sec...</h3>
+  <button id="watchBtn" disabled>▶ Watch Video</button>
 </div>
 
-<!-- PLAYER PAGE -->
+<!-- PLAYER -->
 <div id="playerPage" style="text-align:center;">
   <button onclick="goHome()">⬅ Back</button>
   <h3 id="videoTitle"></h3>
 
-  <!-- ✅ Native HTML5 video player for direct MP4 links -->
-  <video id="videoPlayer" controls controlsList="nodownload">
-    <source id="videoSource" src="" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+  <iframe id="videoFrame" allowfullscreen></iframe>
+
+  <!-- ❤️ LIKE BUTTON -->
+  <button onclick="likeVideo()">❤️ Like</button>
+  <div id="likeCount"></div>
 </div>
 
 <script>
 
-/* =====================
-   VIDEO LIST — Replace the src & thumbnail with your real MP4 URLs
-===================== */
+/* VIDEOS */
 const videos = [
-  {
-    title: "Video 1",
-    video: "https://www.pornhub.com/view_video.php?viewkey=69c65dc4b156d",       // 🔁 Replace with your MP4 link
-    thumbnail: "https://via.placeholder.com/300x150?text=Video+1"
-  },
-  {
-    title: "Video 2",
-    video: "https://your-server.com/video2.mp4",       // 🔁 Replace with your MP4 link
-    thumbnail: "https://via.placeholder.com/300x150?text=Video+2"
-  },
-  {
-    title: "Video 3",
-    video: "https://your-server.com/video3.mp4",       // 🔁 Replace with your MP4 link
-    thumbnail: "https://via.placeholder.com/300x150?text=Video+3"
-  }
+  {title:"Hot Video 1",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150?text=Video+1"},
+  {title:"Hot Video 2",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150?text=Video+2"},
+  {title:"Hot Video 3",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150?text=Video+3"}
 ];
 
-/* DOM ELEMENTS */
 const home = document.getElementById("homePage");
-const adPage = document.getElementById("adPage");
-const playerPage = document.getElementById("playerPage");
+let currentIndex = 0;
 
-let currentVideo = "";
-let currentTitle = "";
+/* STORAGE */
+function getViews(i){ return localStorage.getItem("views"+i) || 0; }
+function getLikes(i){ return localStorage.getItem("likes"+i) || 0; }
 
-/* LOAD VIDEO CARDS */
-videos.forEach(v => {
-  let div = document.createElement("div");
-  div.className = "video-card";
-  div.innerHTML = `
-    <img src="${v.thumbnail}" alt="${v.title}">
-    <div class="video-title">${v.title}</div>
-  `;
-  div.onclick = () => openAdPage(v);
-  home.appendChild(div);
+/* LOAD */
+function loadVideos(list){
+  home.innerHTML = "";
+  list.forEach((v,i)=>{
+    let div = document.createElement("div");
+    div.className = "video-card";
+    div.innerHTML = `
+      <img src="${v.thumbnail}">
+      <div class="video-title">${v.title}</div>
+      <div class="video-stats">👁 ${getViews(i)} | ❤️ ${getLikes(i)}</div>
+    `;
+    div.onclick = ()=>openAdPage(v,i);
+    home.appendChild(div);
+  });
+}
+loadVideos(videos);
+
+/* SEARCH */
+document.getElementById("searchInput").addEventListener("input", function(){
+  let val = this.value.toLowerCase();
+  let filtered = videos.filter(v=>v.title.toLowerCase().includes(val));
+  loadVideos(filtered);
 });
 
-/* OPEN AD PAGE */
-function openAdPage(v) {
-  currentVideo = v.video;
-  currentTitle = v.title;
-  home.style.display = "none";
-  adPage.style.display = "block";
+/* OPEN */
+function openAdPage(v,i){
+  currentIndex = i;
+  localStorage.setItem("views"+i, Number(getViews(i))+1);
 
-  let btn = document.getElementById("watchBtn");
-  btn.disabled = true;
-  btn.innerText = "⏳ Wait 5 sec...";
+  home.style.display="none";
+  adPage.style.display="block";
 
-  setTimeout(() => {
-    btn.disabled = false;
-    btn.innerText = "▶ Watch Video";
-    btn.onclick = playVideo;
-  }, 5000);
+  let time=5;
+  watchBtn.disabled=true;
+
+  let countdown=setInterval(()=>{
+    time--;
+    timerText.innerText="⏳ Wait "+time+" sec...";
+    if(time<=0){
+      clearInterval(countdown);
+      watchBtn.disabled=false;
+      timerText.innerText="✅ Ready!";
+    }
+  },1000);
+
+  watchBtn.onclick=()=>{
+    adPage.style.display="none";
+    playerPage.style.display="block";
+    videoFrame.src=v.video;
+    videoTitle.innerText=v.title;
+    updateLike();
+  }
 }
 
-/* PLAY VIDEO */
-function playVideo() {
-  adPage.style.display = "none";
-  playerPage.style.display = "block";
-
-  const player = document.getElementById("videoPlayer");
-  const source = document.getElementById("videoSource");
-
-  source.src = currentVideo;
-  player.load();   // reload player with new source
-  player.play();
-
-  document.getElementById("videoTitle").innerText = currentTitle;
+/* LIKE */
+function likeVideo(){
+  localStorage.setItem("likes"+currentIndex, Number(getLikes(currentIndex))+1);
+  updateLike();
+}
+function updateLike(){
+  likeCount.innerText="❤️ "+getLikes(currentIndex);
 }
 
-/* GO BACK */
-function goHome() {
-  const player = document.getElementById("videoPlayer");
-  player.pause();
-  player.currentTime = 0;
-
-  playerPage.style.display = "none";
-  home.style.display = "flex";
+/* BACK */
+function goHome(){
+  videoFrame.src="";
+  playerPage.style.display="none";
+  home.style.display="grid";
+  loadVideos(videos);
 }
 
 </script>
