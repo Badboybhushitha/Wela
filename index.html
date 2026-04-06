@@ -73,9 +73,13 @@ button {
   margin: 10px auto;
 }
 
+/* VIDEO PLAYER */
 #videoPlayer {
   width: 100%;
-  height: 220px;
+  max-width: 720px;
+  border-radius: 8px;
+  background: #000;
+  outline: none;
 }
 </style>
 </head>
@@ -89,91 +93,97 @@ button {
 
 <!-- AD PAGE -->
 <div id="adPage" style="text-align:center;">
-<h3>👉 Ads බලලා video unlock කරන්න</h3>
+  <h3>👉 Ads බලලා video unlock කරන්න</h3>
 
-<!-- ADS -->
-<div class="ad-box">
-<script>
-atOptions = {
-'key' : '3811f461a69ce9f73fe20772fe30f2a1',
-'format' : 'iframe',
-'height' : 60,
-'width' : 468,
-'params' : {}
-};
-</script>
-<script src="https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js"></script>
-</div>
+  <!-- ADS -->
+  <div class="ad-box">
+    <script>
+    atOptions = {
+      'key' : '3811f461a69ce9f73fe20772fe30f2a1',
+      'format' : 'iframe',
+      'height' : 60,
+      'width' : 468,
+      'params' : {}
+    };
+    </script>
+    <script src="https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js"></script>
+  </div>
 
-<div class="ad-box">
-<script>
-atOptions = {
-'key' : '2195bb045cce62838420c9b2a6e32455',
-'format' : 'iframe',
-'height' : 250,
-'width' : 300,
-'params' : {}
-};
-</script>
-<script src="https://www.highperformanceformat.com/2195bb045cce62838420c9b2a6e32455/invoke.js"></script>
-</div> 
-   <h3>👉 Ads බලලා video unlock කරන්න</h3>
+  <div class="ad-box">
+    <script>
+    atOptions = {
+      'key' : '2195bb045cce62838420c9b2a6e32455',
+      'format' : 'iframe',
+      'height' : 250,
+      'width' : 300,
+      'params' : {}
+    };
+    </script>
+    <script src="https://www.highperformanceformat.com/2195bb045cce62838420c9b2a6e32455/invoke.js"></script>
+  </div>
 
-<div class="ad-box">
-<script>
-atOptions = {
-'key' : '6bf89ebb4e1e6bffe64d9d95fe6cce70',
-'format' : 'iframe',
-'height' : 300,
-'width' : 160,
-'params' : {}
-};
-</script>
-<script src="https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js"></script>
-</div>
+  <h3>👉 Ads බලලා video unlock කරන්න</h3>
 
-<div class="ad-box">
-<script>
-atOptions = {
-'key' : 'f02391ceb7e8e863beea00f26ec21584',
-'format' : 'iframe',
-'height' : 600,
-'width' : 160,
-'params' : {}
-};
-</script>
-<script src="https://www.highperformanceformat.com/f02391ceb7e8e863beea00f26ec21584/invoke.js"></script>
-</div>
+  <div class="ad-box">
+    <script>
+    atOptions = {
+      'key' : '6bf89ebb4e1e6bffe64d9d95fe6cce70',
+      'format' : 'iframe',
+      'height' : 300,
+      'width' : 160,
+      'params' : {}
+    };
+    </script>
+    <script src="https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js"></script>
+  </div>
 
-<button id="watchBtn" disabled>⏳ Wait 5 sec...</button>
+  <div class="ad-box">
+    <script>
+    atOptions = {
+      'key' : 'f02391ceb7e8e863beea00f26ec21584',
+      'format' : 'iframe',
+      'height' : 600,
+      'width' : 160,
+      'params' : {}
+    };
+    </script>
+    <script src="https://www.highperformanceformat.com/f02391ceb7e8e863beea00f26ec21584/invoke.js"></script>
+  </div>
+
+  <button id="watchBtn" disabled>⏳ Wait 5 sec...</button>
 </div>
 
 <!-- PLAYER PAGE -->
 <div id="playerPage" style="text-align:center;">
-<button onclick="goHome()">⬅ Back</button>
-<h3 id="videoTitle"></h3>
-<iframe id="videoPlayer" src="" allowfullscreen></iframe>
+  <button onclick="goHome()">⬅ Back</button>
+  <h3 id="videoTitle"></h3>
+
+  <!-- ✅ Native HTML5 video player for direct MP4 links -->
+  <video id="videoPlayer" controls controlsList="nodownload">
+    <source id="videoSource" src="" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 </div>
 
 <script>
 
 /* =====================
-   VIDEO LIST
+   VIDEO LIST — Replace the src & thumbnail with your real MP4 URLs
 ===================== */
 const videos = [
   {
     title: "Video 1",
-    video: "https://drive.google.com/file/d/19CK_XAD-OLQoxlXkftP9tKkD7Lzzgtx1/preview",
+    video: "https://www.pornhub.com/view_video.php?viewkey=69c65dc4b156d",       // 🔁 Replace with your MP4 link
     thumbnail: "https://via.placeholder.com/300x150?text=Video+1"
   },
   {
     title: "Video 2",
-    video: "https://drive.google.com/file/d/1zTs06GBnZTzNMzpWkmjZRulXdZxPn0P3/preview",
+    video: "https://your-server.com/video2.mp4",       // 🔁 Replace with your MP4 link
     thumbnail: "https://via.placeholder.com/300x150?text=Video+2"
   },
   {
     title: "Video 3",
-    video: "https://drive.google.com/file/d/10JEmpPHl5DaIa1H_4p25EMHuqnDgVxOW/preview",
+    video: "https://your-server.com/video3.mp4",       // 🔁 Replace with your MP4 link
     thumbnail: "https://via.placeholder.com/300x150?text=Video+3"
   }
 ];
@@ -184,8 +194,9 @@ const adPage = document.getElementById("adPage");
 const playerPage = document.getElementById("playerPage");
 
 let currentVideo = "";
+let currentTitle = "";
 
-/* LOAD VIDEOS - THUMBNAILS ONLY */
+/* LOAD VIDEO CARDS */
 videos.forEach(v => {
   let div = document.createElement("div");
   div.className = "video-card";
@@ -198,8 +209,9 @@ videos.forEach(v => {
 });
 
 /* OPEN AD PAGE */
-function openAdPage(v){
+function openAdPage(v) {
   currentVideo = v.video;
+  currentTitle = v.title;
   home.style.display = "none";
   adPage.style.display = "block";
 
@@ -207,23 +219,34 @@ function openAdPage(v){
   btn.disabled = true;
   btn.innerText = "⏳ Wait 5 sec...";
 
-  setTimeout(()=>{
+  setTimeout(() => {
     btn.disabled = false;
     btn.innerText = "▶ Watch Video";
     btn.onclick = playVideo;
-  },5000);
+  }, 5000);
 }
 
 /* PLAY VIDEO */
-function playVideo(){
+function playVideo() {
   adPage.style.display = "none";
   playerPage.style.display = "block";
-  document.getElementById("videoPlayer").src = currentVideo;
-  document.getElementById("videoTitle").innerText = videos.find(v=>v.video===currentVideo).title;
+
+  const player = document.getElementById("videoPlayer");
+  const source = document.getElementById("videoSource");
+
+  source.src = currentVideo;
+  player.load();   // reload player with new source
+  player.play();
+
+  document.getElementById("videoTitle").innerText = currentTitle;
 }
 
 /* GO BACK */
-function goHome(){
+function goHome() {
+  const player = document.getElementById("videoPlayer");
+  player.pause();
+  player.currentTime = 0;
+
   playerPage.style.display = "none";
   home.style.display = "flex";
 }
