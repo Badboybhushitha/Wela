@@ -4,24 +4,60 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Video Hub PRO</title>
+
 <style>
 body {margin:0;font-family:Arial;background:#0d0d0d;color:white;}
 header {padding:15px;text-align:center;font-size:22px;background:#111;}
 #searchBar {width:95%;max-width:500px;margin:10px auto;padding:10px;border-radius:5px;border:none;display:block;font-size:16px;}
-.container {display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:15px;padding:15px;}
-.video-card {background:#1a1a1a;border-radius:10px;overflow:hidden;cursor:pointer;transition:transform 0.2s, box-shadow 0.3s;}
-.video-card:hover {transform:scale(1.03);box-shadow:0 0 15px #ff0000;}
-.video-card video {width:100%;height:120px;object-fit:cover;display:block;}
+
+.container {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:15px;
+  padding:15px;
+}
+
+.video-card {
+  background:#1a1a1a;
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:0.2s;
+}
+.video-card:hover {
+  transform:scale(1.03);
+  box-shadow:0 0 15px #ff0000;
+}
+
+/* 🔥 THUMBNAIL FIX */
+.video-card img {
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  display:block;
+}
+
 .video-title {text-align:center;padding:5px;}
 .video-stats {text-align:center;font-size:12px;}
+
 #homePage,#adPage,#playerPage {display:none;}
 #homePage {display:grid;}
-button {padding:10px;margin:10px;background:red;color:white;border:none;border-radius:5px;cursor:pointer;transition:0.3s;}
-button:hover {opacity:0.85;}
+
+button {
+  padding:10px;
+  margin:10px;
+  background:red;
+  color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
+
 #videoFrame {width:95%;max-width:800px;height:420px;border:none;}
-@media(max-width:600px){.video-card video{height:100px;}}
+
 </style>
 </head>
+
 <body>
 
 <header>🔥 VIDEO HUB PRO 🔥</header>
@@ -51,89 +87,68 @@ button:hover {opacity:0.85;}
 </div>
 
 <script>
+
 let videos = [
-  {title:"Video 1",video:"https://www.pornhub.com/embed/69c80044122fe",thumbnail:"https://via.placeholder.com/300x150?text=Video+1+Frame"},
-  {title:"Video 2",video:"https://www.pornhub.com/embed/699db237872c1",thumbnail:"https://via.placeholder.com/300x150?text=Video+2+Frame"},
-  {title:"Video 3",video:"https://www.pornhub.com/embed/69cd4dd480148",thumbnail:"https://via.placeholder.com/300x150?text=Video+3+Frame"},
-  {title:"Video 4",video:"https://www.pornhub.com/embed/66ab8e27a93f7",thumbnail:"https://via.placeholder.com/300x150?text=Video+4+Frame"},
-  {title:"Video 5",video:"https://www.pornhub.com/embed/69c7474b64846",thumbnail:"https://via.placeholder.com/300x150?text=Video+5+Frame"},
-  {title:"Video 6",video:"https://www.pornhub.com/embed/69c24f4b2ebc4",thumbnail:"https://via.placeholder.com/300x150?text=Video+6+Frame"},
-  {title:"Video 7",video:"https://www.pornhub.com/embed/69c3e50792b10",thumbnail:"https://via.placeholder.com/300x150?text=Video+7+Frame"},
-  {title:"Video 8",video:"https://www.pornhub.com/embed/697cef74bb92f",thumbnail:"https://via.placeholder.com/300x150?text=Video+8+Frame"},
-  {title:"Video 9",video:"https://drive.google.com/file/d/1zTs06GBnZTzNMzpWkmjZRulXdZxPn0P3/preview",thumbnail:"https://via.placeholder.com/300x150?text=Video+9+Frame"},
-  {title:"Video 10",video:"https://www.pornhub.com/embed/ph6364b481b3986",thumbnail:"https://via.placeholder.com/300x150?text=Video+10+Frame"},
-  {title:"Video 11",video:"https://www.pornhub.com/embed/ph61478ae1de81e",thumbnail:"https://via.placeholder.com/300x150?text=Video+11+Frame"},
-  {title:"Video 12",video:"https://www.pornhub.com/embed/658385b8ae357",thumbnail:"https://via.placeholder.com/300x150?text=Video+12+Frame"},
-  {title:"Video 13",video:"https://www.pornhub.com/embed/64f344d940735",thumbnail:"https://via.placeholder.com/300x150?text=Video+13+Frame"},
-  {title:"Video 14",video:"https://www.pornhub.com/embed/67bb86e5b5063",thumbnail:"https://via.placeholder.com/300x150?text=Video+14+Frame"},
-  {title:"Video 15",video:"https://www.pornhub.com/embed/697dc7dd12202",thumbnail:"https://via.placeholder.com/300x150?text=Video+15+Frame"},
-  {title:"Video 16",video:"https://www.pornhub.com/embed/66a0accb35882",thumbnail:"https://via.placeholder.com/300x150?text=Video+16+Frame"}
+  {title:"Video 1",video:"https://www.pornhub.com/embed/69c80044122fe",thumbnail:"https://via.placeholder.com/300x150?text=Video+1"},
+  {title:"Video 2",video:"https://www.pornhub.com/embed/699db237872c1",thumbnail:"https://via.placeholder.com/300x150?text=Video+2"},
+  {title:"Video 3",video:"https://www.pornhub.com/embed/69cd4dd480148",thumbnail:"https://via.placeholder.com/300x150?text=Video+3"},
+  {title:"Video 4",video:"https://www.pornhub.com/embed/66ab8e27a93f7",thumbnail:"https://via.placeholder.com/300x150?text=Video+4"},
+  {title:"Video 5",video:"https://www.pornhub.com/embed/69c7474b64846",thumbnail:"https://via.placeholder.com/300x150?text=Video+5"},
+  {title:"Video 6",video:"https://www.pornhub.com/embed/69c24f4b2ebc4",thumbnail:"https://via.placeholder.com/300x150?text=Video+6"},
+  {title:"Video 7",video:"https://www.pornhub.com/embed/69c3e50792b10",thumbnail:"https://via.placeholder.com/300x150?text=Video+7"},
+  {title:"Video 8",video:"https://www.pornhub.com/embed/697cef74bb92f",thumbnail:"https://via.placeholder.com/300x150?text=Video+8"},
+  {title:"Video 9",video:"https://drive.google.com/file/d/1zTs06GBnZTzNMzpWkmjZRulXdZxPn0P3/preview",thumbnail:"https://via.placeholder.com/300x150?text=Video+9"},
+  {title:"Video 10",video:"https://www.pornhub.com/embed/ph6364b481b3986",thumbnail:"https://via.placeholder.com/300x150?text=Video+10"}
 ];
 
 const home=document.getElementById("homePage");
 const searchBar=document.getElementById("searchBar");
 const adPage=document.getElementById("adPage");
 const playerPage=document.getElementById("playerPage");
+
 let currentIndex=0;
 
-/* RESET OLD DATA ONCE */
-if(!localStorage.getItem("initialized")){
+/* RESET OLD DATA */
+if(!localStorage.getItem("init")){
   localStorage.clear();
-  localStorage.setItem("initialized","true");
+  localStorage.setItem("init","1");
 }
 
 /* RANDOM VIEWS */
 function getRandomViews(){
-  return Math.floor(Math.random() * 22000) + 18000; // 18K - 40K
+  return Math.floor(Math.random()*22000)+18000;
 }
 
-/* RANDOM LIKES BASED ON VIEWS */
-function getRandomLikes(views){
-  let min = Math.floor(views * 0.3);
-  let max = Math.floor(views * 0.7);
-  return Math.floor(Math.random() * (max - min)) + min;
+/* RANDOM LIKES */
+function getRandomLikes(v){
+  return Math.floor(v*(0.3+Math.random()*0.4));
 }
 
 /* STORAGE */
 function getViews(i){
-  let v = localStorage.getItem("v"+i);
-  if(v === null){
-    let views = getRandomViews();
-    localStorage.setItem("v"+i, views);
-
-    let likes = getRandomLikes(views);
-    localStorage.setItem("l"+i, likes);
-
+  let v=localStorage.getItem("v"+i);
+  if(v===null){
+    let views=getRandomViews();
+    localStorage.setItem("v"+i,views);
+    localStorage.setItem("l"+i,getRandomLikes(views));
     return views;
   }
   return parseInt(v);
 }
 
 function getLikes(i){
-  let l = localStorage.getItem("l"+i);
-  if(l === null){
-    let views = getViews(i);
-    let likes = getRandomLikes(views);
-    localStorage.setItem("l"+i, likes);
-    return likes;
-  }
-  return parseInt(l);
+  return parseInt(localStorage.getItem("l"+i));
 }
 
 function addView(i){
-  localStorage.setItem("v"+i, getViews(i)+1);
+  localStorage.setItem("v"+i,getViews(i)+1);
 }
 
 function addLike(i){
-  localStorage.setItem("l"+i, getLikes(i)+1);
+  localStorage.setItem("l"+i,getLikes(i)+1);
 }
 
-function updateStats(){
-  document.getElementById("likeCount").innerText="❤️ "+getLikes(currentIndex);
-  document.getElementById("viewCount").innerText=getViews(currentIndex);
-}
-
-/* LOAD */
+/* LOAD VIDEOS WITH THUMBNAIL */
 function loadVideos(filter=""){
   home.innerHTML="";
   videos.forEach((v,i)=>{
@@ -141,13 +156,10 @@ function loadVideos(filter=""){
       let div=document.createElement("div");
       div.className="video-card";
       div.innerHTML=`
-        <video src="${v.video}" poster="${v.thumbnail}" preload="metadata" muted loop></video>
+        <img src="${v.thumbnail}">
         <div class="video-title">${v.title}</div>
-        <div class="video-stats">👁 <span id="v${i}">${getViews(i)}</span> | ❤️ <span id="l${i}">${getLikes(i)}</span></div>
+        <div class="video-stats">👁 ${getViews(i)} | ❤️ ${getLikes(i)}</div>
       `;
-      let videoEl=div.querySelector("video");
-      div.onmouseenter=()=>{videoEl.play(); videoEl.muted=true;}
-      div.onmouseleave=()=>{videoEl.pause(); videoEl.currentTime=0;}
       div.onclick=()=>openAdPage(i);
       home.appendChild(div);
     }
@@ -156,27 +168,25 @@ function loadVideos(filter=""){
 loadVideos();
 
 /* SEARCH */
-searchBar.addEventListener("input",()=>{loadVideos(searchBar.value);});
+searchBar.addEventListener("input",()=>loadVideos(searchBar.value));
 
-/* ADS */
+/* ADS PAGE */
 function openAdPage(i){
   currentIndex=i;
   addView(i);
-  updateStats();
   home.style.display="none";
   adPage.style.display="block";
 }
 
-let ad1=false, ad2=false, ad3=false;
+/* ADS */
+let a1=false,a2=false,a3=false;
 
-adBtn1.onclick=()=>{window.open("https://www.profitablecpmratenetwork.com/qar2dxf94?key=9056d9ae5eefe81dd1137c56b8c23c25","_blank"); ad1=true; checkUnlock();}
-adBtn2.onclick=()=>{window.open("https://www.profitablecpmratenetwork.com/gipq1282rm?key=16b342b78faef66f1afd9ac19498b67d","_blank"); ad2=true; checkUnlock();}
-adBtn3.onclick=()=>{window.open("https://www.profitablecpmratenetwork.com/g1stmyvm?key=4d492f8604e69fc3b999ddb13a82f896","_blank"); ad3=true; checkUnlock();}
+adBtn1.onclick=()=>{window.open("#");a1=true;check();}
+adBtn2.onclick=()=>{window.open("#");a2=true;check();}
+adBtn3.onclick=()=>{window.open("#");a3=true;check();}
 
-function checkUnlock(){
-  if(ad1 && ad2 && ad3){
-    unlockBtn.disabled=false;
-  }
+function check(){
+  if(a1&&a2&&a3) unlockBtn.disabled=false;
 }
 
 /* PLAY */
@@ -186,6 +196,12 @@ unlockBtn.onclick=()=>{
   videoFrame.src=videos[currentIndex].video;
   videoTitle.innerText=videos[currentIndex].title;
   updateStats();
+}
+
+/* STATS */
+function updateStats(){
+  likeCount.innerText="❤️ "+getLikes(currentIndex);
+  viewCount.innerText=getViews(currentIndex);
 }
 
 /* LIKE */
@@ -199,10 +215,11 @@ function goHome(){
   videoFrame.src="";
   playerPage.style.display="none";
   home.style.display="grid";
-  ad1=false; ad2=false; ad3=false;
   unlockBtn.disabled=true;
+  a1=a2=a3=false;
   loadVideos(searchBar.value);
 }
+
 </script>
 
 </body>
