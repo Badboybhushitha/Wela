@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Video Hub PRO </title>
+<title>Video Hub PRO</title>
 <style>
 body {margin:0;font-family:Arial;background:#0d0d0d;color:white;}
 header {padding:15px;text-align:center;font-size:22px;background:#111;}
@@ -33,11 +33,12 @@ button:hover {opacity:0.85;}
 
 <!-- ADS PAGE -->
 <div id="adPage" style="text-align:center;">
-  <h3>👉 Ads 2ක් click කරලා පසුව unlock button click  කරන්න</h3>
+  <h3>👉 Ads 3ක් click කරලා පසුව unlock button click කරන්න</h3>
   <button id="adBtn1">📢 Watch Ad 1</button>
   <button id="adBtn2">📢 Watch Ad 2</button>
+  <button id="adBtn3">📢 Watch Ad 3</button>
   <br>
-  <button id="unlockBtn" disabled>🔓 Unlock </button>
+  <button id="unlockBtn" disabled>🔓 Unlock</button>
 </div>
 
 <!-- PLAYER -->
@@ -66,6 +67,8 @@ let videos = [
 
 const home=document.getElementById("homePage");
 const searchBar=document.getElementById("searchBar");
+const adPage=document.getElementById("adPage");
+const playerPage=document.getElementById("playerPage");
 let currentIndex=0;
 
 /* LOCALSTORAGE FOR VIEWS & LIKES */
@@ -73,7 +76,10 @@ function getViews(i){return parseInt(localStorage.getItem("v"+i)||0);}
 function getLikes(i){return parseInt(localStorage.getItem("l"+i)||0);}
 function addView(i){localStorage.setItem("v"+i,getViews(i)+1);}
 function addLike(i){localStorage.setItem("l"+i,getLikes(i)+1);}
-function updateStats(){document.getElementById("likeCount").innerText="❤️ "+getLikes(currentIndex);document.getElementById("viewCount").innerText=getViews(currentIndex);}
+function updateStats(){
+  document.getElementById("likeCount").innerText="❤️ "+getLikes(currentIndex);
+  document.getElementById("viewCount").innerText=getViews(currentIndex);
+}
 
 /* LOAD VIDEO CARDS */
 function loadVideos(filter=""){
@@ -112,16 +118,26 @@ function openAdPage(i){
 }
 
 /* ADS BUTTON LOGIC - OPEN ORIGINAL SITES */
-let ad1=false,ad2=false;
+let ad1=false, ad2=false, ad3=false;
+
 document.getElementById("adBtn1").onclick=function(){
-  window.open("https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js","_blank");
+  window.open("YOUR_AD_LINK_1_HERE","_blank");
   ad1=true; checkUnlock();
 }
 document.getElementById("adBtn2").onclick=function(){
-  window.open("https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js","_blank");
+  window.open("YOUR_AD_LINK_2_HERE","_blank");
   ad2=true; checkUnlock();
 }
-function checkUnlock(){if(ad1 && ad2){document.getElementById("unlockBtn").disabled=false;}}
+document.getElementById("adBtn3").onclick=function(){
+  window.open("YOUR_AD_LINK_3_HERE","_blank");
+  ad3=true; checkUnlock();
+}
+
+function checkUnlock(){
+  if(ad1 && ad2 && ad3){
+    document.getElementById("unlockBtn").disabled=false;
+  }
+}
 
 /* UNLOCK VIDEO */
 document.getElementById("unlockBtn").onclick=function(){
@@ -133,14 +149,18 @@ document.getElementById("unlockBtn").onclick=function(){
 }
 
 /* LIKE */
-function likeVideo(){addLike(currentIndex);updateStats();document.getElementById("l"+currentIndex).innerText=getLikes(currentIndex);}
+function likeVideo(){
+  addLike(currentIndex);
+  updateStats();
+  document.getElementById("l"+currentIndex).innerText=getLikes(currentIndex);
+}
 
 /* BACK */
 function goHome(){
   document.getElementById("videoFrame").src="";
   playerPage.style.display="none";
   home.style.display="grid";
-  ad1=false; ad2=false;
+  ad1=false; ad2=false; ad3=false;
   document.getElementById("unlockBtn").disabled=true;
   loadVideos(searchBar.value);
   videos.forEach((v,i)=>{document.getElementById("v"+i) && (document.getElementById("v"+i).innerText=getViews(i));});
