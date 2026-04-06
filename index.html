@@ -76,21 +76,35 @@ const adPage=document.getElementById("adPage");
 const playerPage=document.getElementById("playerPage");
 let currentIndex=0;
 
-/* RANDOM START VALUES (18K - 30K+) */
-function getRandomViews(){
-  return Math.floor(Math.random() * 12000) + 18000;
-}
-function getRandomLikes(){
-  return Math.floor(Math.random() * 12000) + 18000;
+/* RESET OLD DATA ONCE */
+if(!localStorage.getItem("initialized")){
+  localStorage.clear();
+  localStorage.setItem("initialized","true");
 }
 
-/* LOCALSTORAGE */
+/* RANDOM VIEWS */
+function getRandomViews(){
+  return Math.floor(Math.random() * 22000) + 18000; // 18K - 40K
+}
+
+/* RANDOM LIKES BASED ON VIEWS */
+function getRandomLikes(views){
+  let min = Math.floor(views * 0.3);
+  let max = Math.floor(views * 0.7);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+/* STORAGE */
 function getViews(i){
   let v = localStorage.getItem("v"+i);
   if(v === null){
-    let start = getRandomViews();
-    localStorage.setItem("v"+i, start);
-    return start;
+    let views = getRandomViews();
+    localStorage.setItem("v"+i, views);
+
+    let likes = getRandomLikes(views);
+    localStorage.setItem("l"+i, likes);
+
+    return views;
   }
   return parseInt(v);
 }
@@ -98,9 +112,10 @@ function getViews(i){
 function getLikes(i){
   let l = localStorage.getItem("l"+i);
   if(l === null){
-    let start = getRandomLikes();
-    localStorage.setItem("l"+i, start);
-    return start;
+    let views = getViews(i);
+    let likes = getRandomLikes(views);
+    localStorage.setItem("l"+i, likes);
+    return likes;
   }
   return parseInt(l);
 }
@@ -118,7 +133,7 @@ function updateStats(){
   document.getElementById("viewCount").innerText=getViews(currentIndex);
 }
 
-/* LOAD VIDEOS */
+/* LOAD */
 function loadVideos(filter=""){
   home.innerHTML="";
   videos.forEach((v,i)=>{
@@ -143,7 +158,7 @@ loadVideos();
 /* SEARCH */
 searchBar.addEventListener("input",()=>{loadVideos(searchBar.value);});
 
-/* OPEN ADS */
+/* ADS */
 function openAdPage(i){
   currentIndex=i;
   addView(i);
@@ -152,7 +167,6 @@ function openAdPage(i){
   adPage.style.display="block";
 }
 
-/* ADS */
 let ad1=false, ad2=false, ad3=false;
 
 adBtn1.onclick=()=>{window.open("https://www.profitablecpmratenetwork.com/qar2dxf94?key=9056d9ae5eefe81dd1137c56b8c23c25","_blank"); ad1=true; checkUnlock();}
