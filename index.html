@@ -28,10 +28,8 @@ button:hover {opacity:0.85;}
 
 <input type="text" id="searchBar" placeholder="Search videos...">
 
-<!-- HOME -->
 <div id="homePage" class="container"></div>
 
-<!-- ADS PAGE -->
 <div id="adPage" style="text-align:center;">
   <h3>👉 Ads 3ක් click කරලා පසුව unlock button click කරන්න</h3>
   <button id="adBtn1">📢 Watch Ad 1</button>
@@ -41,7 +39,6 @@ button:hover {opacity:0.85;}
   <button id="unlockBtn" disabled>🔓 Unlock</button>
 </div>
 
-<!-- PLAYER -->
 <div id="playerPage" style="text-align:center;">
   <button onclick="goHome()">⬅ Back</button>
   <h3 id="videoTitle"></h3>
@@ -79,17 +76,49 @@ const adPage=document.getElementById("adPage");
 const playerPage=document.getElementById("playerPage");
 let currentIndex=0;
 
-/* LOCALSTORAGE FOR VIEWS & LIKES */
-function getViews(i){return parseInt(localStorage.getItem("v"+i)||0);}
-function getLikes(i){return parseInt(localStorage.getItem("l"+i)||0);}
-function addView(i){localStorage.setItem("v"+i,getViews(i)+1);}
-function addLike(i){localStorage.setItem("l"+i,getLikes(i)+1);}
+/* RANDOM START VALUES (18K - 30K+) */
+function getRandomViews(){
+  return Math.floor(Math.random() * 12000) + 18000;
+}
+function getRandomLikes(){
+  return Math.floor(Math.random() * 12000) + 18000;
+}
+
+/* LOCALSTORAGE */
+function getViews(i){
+  let v = localStorage.getItem("v"+i);
+  if(v === null){
+    let start = getRandomViews();
+    localStorage.setItem("v"+i, start);
+    return start;
+  }
+  return parseInt(v);
+}
+
+function getLikes(i){
+  let l = localStorage.getItem("l"+i);
+  if(l === null){
+    let start = getRandomLikes();
+    localStorage.setItem("l"+i, start);
+    return start;
+  }
+  return parseInt(l);
+}
+
+function addView(i){
+  localStorage.setItem("v"+i, getViews(i)+1);
+}
+
+function addLike(i){
+  localStorage.setItem("l"+i, getLikes(i)+1);
+}
+
 function updateStats(){
   document.getElementById("likeCount").innerText="❤️ "+getLikes(currentIndex);
   document.getElementById("viewCount").innerText=getViews(currentIndex);
 }
 
-/* LOAD VIDEO CARDS */
+/* LOAD VIDEOS */
 function loadVideos(filter=""){
   home.innerHTML="";
   videos.forEach((v,i)=>{
@@ -111,48 +140,37 @@ function loadVideos(filter=""){
 }
 loadVideos();
 
-/* SEARCH BAR FILTER */
+/* SEARCH */
 searchBar.addEventListener("input",()=>{loadVideos(searchBar.value);});
 
-/* OPEN ADS PAGE */
+/* OPEN ADS */
 function openAdPage(i){
   currentIndex=i;
   addView(i);
   updateStats();
-  document.getElementById("v"+i).innerText=getViews(i);
-  document.getElementById("l"+i).innerText=getLikes(i);
   home.style.display="none";
   adPage.style.display="block";
 }
 
-/* ADS BUTTON LOGIC - OPEN ORIGINAL SITES */
+/* ADS */
 let ad1=false, ad2=false, ad3=false;
 
-document.getElementById("adBtn1").onclick=function(){
-  window.open("https://www.profitablecpmratenetwork.com/qar2dxf94?key=9056d9ae5eefe81dd1137c56b8c23c25","_blank");
-  ad1=true; checkUnlock();
-}
-document.getElementById("adBtn2").onclick=function(){
-  window.open("https://www.profitablecpmratenetwork.com/gipq1282rm?key=16b342b78faef66f1afd9ac19498b67d","_blank");
-  ad2=true; checkUnlock();
-}
-document.getElementById("adBtn3").onclick=function(){
-  window.open("https://www.profitablecpmratenetwork.com/g1stmyvm?key=4d492f8604e69fc3b999ddb13a82f896","_blank");
-  ad3=true; checkUnlock();
-}
+adBtn1.onclick=()=>{window.open("https://www.profitablecpmratenetwork.com/qar2dxf94?key=9056d9ae5eefe81dd1137c56b8c23c25","_blank"); ad1=true; checkUnlock();}
+adBtn2.onclick=()=>{window.open("https://www.profitablecpmratenetwork.com/gipq1282rm?key=16b342b78faef66f1afd9ac19498b67d","_blank"); ad2=true; checkUnlock();}
+adBtn3.onclick=()=>{window.open("https://www.profitablecpmratenetwork.com/g1stmyvm?key=4d492f8604e69fc3b999ddb13a82f896","_blank"); ad3=true; checkUnlock();}
 
 function checkUnlock(){
   if(ad1 && ad2 && ad3){
-    document.getElementById("unlockBtn").disabled=false;
+    unlockBtn.disabled=false;
   }
 }
 
-/* UNLOCK VIDEO */
-document.getElementById("unlockBtn").onclick=function(){
+/* PLAY */
+unlockBtn.onclick=()=>{
   adPage.style.display="none";
   playerPage.style.display="block";
-  document.getElementById("videoFrame").src=videos[currentIndex].video;
-  document.getElementById("videoTitle").innerText=videos[currentIndex].title;
+  videoFrame.src=videos[currentIndex].video;
+  videoTitle.innerText=videos[currentIndex].title;
   updateStats();
 }
 
@@ -160,18 +178,16 @@ document.getElementById("unlockBtn").onclick=function(){
 function likeVideo(){
   addLike(currentIndex);
   updateStats();
-  document.getElementById("l"+currentIndex).innerText=getLikes(currentIndex);
 }
 
 /* BACK */
 function goHome(){
-  document.getElementById("videoFrame").src="";
+  videoFrame.src="";
   playerPage.style.display="none";
   home.style.display="grid";
   ad1=false; ad2=false; ad3=false;
-  document.getElementById("unlockBtn").disabled=true;
+  unlockBtn.disabled=true;
   loadVideos(searchBar.value);
-  videos.forEach((v,i)=>{document.getElementById("v"+i) && (document.getElementById("v"+i).innerText=getViews(i));});
 }
 </script>
 
