@@ -3,102 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 Video Hub</title>
+<title>Video Hub</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #0d0d0d;
-  color: white;
-}
+body {margin:0;font-family:Arial;background:#0d0d0d;color:white;}
+header {padding:15px;text-align:center;font-size:22px;background:#111;}
 
-header {
-  padding: 15px;
-  text-align: center;
-  font-size: 24px;
-  background: #111;
-}
-
-/* SEARCH */
-.search-box {
-  padding: 10px;
-  text-align: center;
-}
-.search-box input {
-  width: 90%;
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-}
-
-/* GRID */
 .container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 15px;
-  padding: 15px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:15px;padding:15px;
 }
 
-/* CARD */
 .video-card {
-  background: #1a1a1a;
-  border-radius: 10px;
-  overflow: hidden;
-  cursor: pointer;
+  background:#1a1a1a;
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
 }
-.video-card:hover {
-  transform: scale(1.05);
-}
-
 .video-card img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
+  width:100%;height:120px;object-fit:cover;
 }
 
-.video-title {
-  text-align: center;
-  padding: 5px;
-}
+.video-title {text-align:center;padding:5px;}
+.video-stats {text-align:center;font-size:12px;}
 
-.video-stats {
-  text-align: center;
-  font-size: 12px;
-}
+#homePage,#adPage,#playerPage {display:none;}
+#homePage {display:grid;}
 
-/* PAGES */
-#homePage, #adPage, #playerPage {
-  display: none;
-}
-#homePage {
-  display: grid;
-}
-
-/* BUTTON */
 button {
-  padding: 10px;
-  margin: 10px;
-  background: red;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  padding:10px;margin:10px;
+  background:red;color:white;
+  border:none;border-radius:5px;
+  cursor:pointer;
 }
 
-/* PLAYER */
 #videoFrame {
-  width: 95%;
-  max-width: 800px;
-  height: 420px;
-  border: none;
+  width:95%;max-width:800px;height:420px;border:none;
 }
 
-/* HIDDEN ADS */
-.hidden-ad {
-  display: none;
-  margin: 15px auto;
-}
+.hidden-ad {display:none;margin:15px auto;}
 </style>
 </head>
 
@@ -106,47 +50,42 @@ button {
 
 <header>🔥 VIDEO HUB 🔥</header>
 
-<!-- SEARCH -->
-<div class="search-box">
-  <input type="text" id="searchInput" placeholder="Search videos...">
-</div>
-
 <!-- HOME -->
 <div id="homePage" class="container"></div>
 
-<!-- AD PAGE -->
+<!-- ADS PAGE -->
 <div id="adPage" style="text-align:center;">
   <h3>👉 Ads 2ක් click කරලා unlock කරන්න</h3>
 
-  <!-- BUTTONS -->
   <button onclick="showAd1()">📢 Watch Ad 1</button>
   <button onclick="showAd2()">📢 Watch Ad 2</button>
 
-  <br>
-
-  <!-- ADS -->
+  <!-- AD 1 -->
   <div id="ad1" class="hidden-ad">
     <script>
-    atOptions = {
-      'key' : '3811f461a69ce9f73fe20772fe30f2a1',
-      'format' : 'iframe',
-      'height' : 60,
-      'width' : 468
-    };
+      atOptions = {
+        'key' : '3811f461a69ce9f73fe20772fe30f2a1',
+        'format' : 'iframe',
+        'height' : 60,
+        'width' : 468,
+        'params' : {}
+      };
     </script>
     <script src="https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js"></script>
   </div>
 
+  <!-- AD 2 -->
   <div id="ad2" class="hidden-ad">
     <script>
-    atOptions = {
-      'key' : '2195bb045cce62838420c9b2a6e32455',
-      'format' : 'iframe',
-      'height' : 250,
-      'width' : 300
-    };
+      atOptions = {
+        'key' : '6bf89ebb4e1e6bffe64d9d95fe6cce70',
+        'format' : 'iframe',
+        'height' : 300,
+        'width' : 160,
+        'params' : {}
+      };
     </script>
-    <script src="https://www.highperformanceformat.com/2195bb045cce62838420c9b2a6e32455/invoke.js"></script>
+    <script src="https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js"></script>
   </div>
 
   <br>
@@ -159,59 +98,51 @@ button {
   <button onclick="goHome()">⬅ Back</button>
   <h3 id="videoTitle"></h3>
   <iframe id="videoFrame" allowfullscreen></iframe>
-
-  <button onclick="likeVideo()">❤️ Like</button>
-  <div id="likeCount"></div>
 </div>
 
 <script>
 
 /* VIDEOS */
 const videos = [
-  {title:"Video 1",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150"},
-  {title:"Video 2",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150"}
+  {
+    title:"Video 1",
+    video:"https://www.pornhub.com/embed/69c65dc4b156d",
+    thumbnail:"https://via.placeholder.com/300x150"
+  },
+  {
+    title:"Video 2",
+    video:"https://www.pornhub.com/embed/69c65dc4b156d",
+    thumbnail:"https://via.placeholder.com/300x150"
+  }
 ];
 
 const home = document.getElementById("homePage");
 let currentIndex = 0;
 
-/* STORAGE */
-function getViews(i){ return localStorage.getItem("v"+i)||0;}
-function getLikes(i){ return localStorage.getItem("l"+i)||0;}
-
-/* LOAD */
-function loadVideos(list){
+/* LOAD VIDEOS */
+function loadVideos(){
   home.innerHTML="";
-  list.forEach((v,i)=>{
+  videos.forEach((v,i)=>{
     let div=document.createElement("div");
     div.className="video-card";
     div.innerHTML=`
       <img src="${v.thumbnail}">
       <div class="video-title">${v.title}</div>
-      <div class="video-stats">👁 ${getViews(i)} | ❤️ ${getLikes(i)}</div>
     `;
-    div.onclick=()=>openAdPage(v,i);
+    div.onclick=()=>openAdPage(i);
     home.appendChild(div);
   });
 }
-loadVideos(videos);
+loadVideos();
 
-/* SEARCH */
-searchInput.oninput=function(){
-  let val=this.value.toLowerCase();
-  loadVideos(videos.filter(v=>v.title.toLowerCase().includes(val)));
-}
-
-/* OPEN */
-function openAdPage(v,i){
+/* OPEN ADS PAGE */
+function openAdPage(i){
   currentIndex=i;
-  localStorage.setItem("v"+i, Number(getViews(i))+1);
-
   home.style.display="none";
   adPage.style.display="block";
 }
 
-/* ADS BUTTON LOGIC */
+/* ADS LOGIC */
 let ad1=false, ad2=false;
 
 function showAd1(){
@@ -228,27 +159,17 @@ function showAd2(){
 
 function checkUnlock(){
   if(ad1 && ad2){
-    unlockBtn.disabled=false;
+    document.getElementById("unlockBtn").disabled=false;
   }
 }
 
 /* UNLOCK */
-unlockBtn.onclick=function(){
+document.getElementById("unlockBtn").onclick=function(){
   adPage.style.display="none";
   playerPage.style.display="block";
 
   videoFrame.src=videos[currentIndex].video;
   videoTitle.innerText=videos[currentIndex].title;
-  updateLike();
-}
-
-/* LIKE */
-function likeVideo(){
-  localStorage.setItem("l"+currentIndex, Number(getLikes(currentIndex))+1);
-  updateLike();
-}
-function updateLike(){
-  likeCount.innerText="❤️ "+getLikes(currentIndex);
 }
 
 /* BACK */
@@ -257,10 +178,9 @@ function goHome(){
   playerPage.style.display="none";
   home.style.display="grid";
 
-  ad1=false; ad2=false;
+  ad1=false;
+  ad2=false;
   unlockBtn.disabled=true;
-
-  loadVideos(videos);
 }
 
 </script>
