@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Video Hub PRO Ultimate</title>
+<title>Video Hub PRO Ultimate Ads Open</title>
 <style>
 body {margin:0;font-family:Arial;background:#0d0d0d;color:white;}
 header {padding:15px;text-align:center;font-size:22px;background:#111;}
@@ -19,13 +19,12 @@ header {padding:15px;text-align:center;font-size:22px;background:#111;}
 button {padding:10px;margin:10px;background:red;color:white;border:none;border-radius:5px;cursor:pointer;transition:0.3s;}
 button:hover {opacity:0.85;}
 #videoFrame {width:95%;max-width:800px;height:420px;border:none;}
-.hidden-ad {display:none;margin:15px auto;}
 @media(max-width:600px){.video-card video{height:100px;}}
 </style>
 </head>
 <body>
 
-<header>🔥 VIDEO HUB PRO Ultimate 🔥</header>
+<header>🔥 VIDEO HUB PRO Ultimate Ads Open 🔥</header>
 
 <input type="text" id="searchBar" placeholder="Search videos...">
 
@@ -37,23 +36,6 @@ button:hover {opacity:0.85;}
   <h3>👉 Ads 2ක් click කරලා unlock කරන්න</h3>
   <button id="adBtn1">📢 Watch Ad 1</button>
   <button id="adBtn2">📢 Watch Ad 2</button>
-
-  <!-- AD 1 -->
-  <div id="ad1" class="hidden-ad">
-    <script>
-      atOptions = {'key':'3811f461a69ce9f73fe20772fe30f2a1','format':'iframe','height':60,'width':468,'params':{}};
-    </script>
-    <script src="https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js"></script>
-  </div>
-
-  <!-- AD 2 -->
-  <div id="ad2" class="hidden-ad">
-    <script>
-      atOptions = {'key':'6bf89ebb4e1e6bffe64d9d95fe6cce70','format':'iframe','height':300,'width':160,'params':{}};
-    </script>
-    <script src="https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js"></script>
-  </div>
-
   <br>
   <button id="unlockBtn" disabled>🔓 Unlock Video</button>
 </div>
@@ -90,7 +72,7 @@ function addView(i){localStorage.setItem("v"+i,getViews(i)+1);}
 function addLike(i){localStorage.setItem("l"+i,getLikes(i)+1);}
 function updateStats(){document.getElementById("likeCount").innerText="❤️ "+getLikes(currentIndex);document.getElementById("viewCount").innerText=getViews(currentIndex);}
 
-/* LOAD VIDEO CARDS WITH HOVER PREVIEW */
+/* LOAD VIDEO CARDS */
 function loadVideos(filter=""){
   home.innerHTML="";
   videos.forEach((v,i)=>{
@@ -124,16 +106,18 @@ function openAdPage(i){
   document.getElementById("l"+i).innerText=getLikes(i);
   home.style.display="none";
   adPage.style.display="block";
-
-  /* AUTO CONFIRM ADS PLAY AFTER 1s */
-  setTimeout(()=>{document.getElementById("ad1").style.display="block"; ad1=true; checkUnlock();},1000);
-  setTimeout(()=>{document.getElementById("ad2").style.display="block"; ad2=true; checkUnlock();},2000);
 }
 
-/* ADS BUTTON LOGIC */
+/* ADS BUTTON LOGIC - OPEN ORIGINAL SITES */
 let ad1=false,ad2=false;
-document.getElementById("adBtn1").onclick=function(){document.getElementById("ad1").style.display="block"; ad1=true; checkUnlock();}
-document.getElementById("adBtn2").onclick=function(){document.getElementById("ad2").style.display="block"; ad2=true; checkUnlock();}
+document.getElementById("adBtn1").onclick=function(){
+  window.open("https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js","_blank");
+  ad1=true; checkUnlock();
+}
+document.getElementById("adBtn2").onclick=function(){
+  window.open("https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js","_blank");
+  ad2=true; checkUnlock();
+}
 function checkUnlock(){if(ad1 && ad2){document.getElementById("unlockBtn").disabled=false;}}
 
 /* UNLOCK VIDEO */
