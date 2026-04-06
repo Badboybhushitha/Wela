@@ -46,7 +46,6 @@ header {
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
-  transition: 0.3s;
 }
 .video-card:hover {
   transform: scale(1.05);
@@ -59,16 +58,13 @@ header {
 }
 
 .video-title {
-  padding: 5px;
-  font-size: 14px;
   text-align: center;
+  padding: 5px;
 }
 
-/* COUNTERS */
 .video-stats {
-  font-size: 12px;
   text-align: center;
-  padding-bottom: 5px;
+  font-size: 12px;
 }
 
 /* PAGES */
@@ -96,10 +92,11 @@ button {
   max-width: 800px;
   height: 420px;
   border: none;
-  border-radius: 10px;
 }
 
-.ad-box {
+/* HIDDEN ADS */
+.hidden-ad {
+  display: none;
   margin: 15px auto;
 }
 </style>
@@ -109,7 +106,7 @@ button {
 
 <header>🔥 VIDEO HUB 🔥</header>
 
-<!-- 🔎 SEARCH BAR -->
+<!-- SEARCH -->
 <div class="search-box">
   <input type="text" id="searchInput" placeholder="Search videos...">
 </div>
@@ -119,48 +116,50 @@ button {
 
 <!-- AD PAGE -->
 <div id="adPage" style="text-align:center;">
-  <h3>👉 Ads බලලා video unlock කරන්න</h3>
+  <h3>👉 Ads 2ක් click කරලා unlock කරන්න</h3>
 
-  <div class="ad-box">
+  <!-- BUTTONS -->
+  <button onclick="showAd1()">📢 Watch Ad 1</button>
+  <button onclick="showAd2()">📢 Watch Ad 2</button>
+
+  <br>
+
+  <!-- ADS -->
+  <div id="ad1" class="hidden-ad">
     <script>
-    atOptions = {'key':'3811f461a69ce9f73fe20772fe30f2a1','format':'iframe','height':60,'width':468};
+    atOptions = {
+      'key' : '3811f461a69ce9f73fe20772fe30f2a1',
+      'format' : 'iframe',
+      'height' : 60,
+      'width' : 468
+    };
     </script>
     <script src="https://www.highperformanceformat.com/3811f461a69ce9f73fe20772fe30f2a1/invoke.js"></script>
   </div>
 
-  <div class="ad-box">
+  <div id="ad2" class="hidden-ad">
     <script>
-    atOptions = {'key':'2195bb045cce62838420c9b2a6e32455','format':'iframe','height':250,'width':300};
+    atOptions = {
+      'key' : '2195bb045cce62838420c9b2a6e32455',
+      'format' : 'iframe',
+      'height' : 250,
+      'width' : 300
+    };
     </script>
     <script src="https://www.highperformanceformat.com/2195bb045cce62838420c9b2a6e32455/invoke.js"></script>
   </div>
 
-  <div class="ad-box">
-    <script>
-    atOptions = {'key':'6bf89ebb4e1e6bffe64d9d95fe6cce70','format':'iframe','height':300,'width':160};
-    </script>
-    <script src="https://www.highperformanceformat.com/6bf89ebb4e1e6bffe64d9d95fe6cce70/invoke.js"></script>
-  </div>
+  <br>
 
-  <div class="ad-box">
-    <script>
-    atOptions = {'key':'f02391ceb7e8e863beea00f26ec21584','format':'iframe','height':600,'width':160};
-    </script>
-    <script src="https://www.highperformanceformat.com/f02391ceb7e8e863beea00f26ec21584/invoke.js"></script>
-  </div>
-
-  <h3 id="timerText">⏳ Wait 5 sec...</h3>
-  <button id="watchBtn" disabled>▶ Watch Video</button>
+  <button id="unlockBtn" disabled>🔓 Unlock Video</button>
 </div>
 
 <!-- PLAYER -->
 <div id="playerPage" style="text-align:center;">
   <button onclick="goHome()">⬅ Back</button>
   <h3 id="videoTitle"></h3>
-
   <iframe id="videoFrame" allowfullscreen></iframe>
 
-  <!-- ❤️ LIKE BUTTON -->
   <button onclick="likeVideo()">❤️ Like</button>
   <div id="likeCount"></div>
 </div>
@@ -169,75 +168,83 @@ button {
 
 /* VIDEOS */
 const videos = [
-  {title:"Hot Video 1",video:"https://xhchannel.com/videos/i-want-you-to-cum-inside-my-tight-pussy-please-fill-me-up-xhzS6wa?utm_source=ext_shared&utm_medium=referral&utm_campaign=link",thumbnail:"https://via.placeholder.com/300x150?text=Video+1"}, 
-  {title:"Hot Video 2",video:"https://www.pornhub.com/view_video.php?viewkey=699db237872c1",thumbnail:"https://via.placeholder.com/300x150?text=Video+2"},
-  {title:"Hot Video 3",video:"https://xhchannel.com/videos/horny-sex-with-pretty-latina-xh3Gy9Y?utm_source=ext_shared&utm_medium=referral&utm_campaign=link",thumbnail:"https://via.placeholder.com/300x150?text=Video+3"}
+  {title:"Video 1",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150"},
+  {title:"Video 2",video:"https://www.pornhub.com/embed/69c65dc4b156d",thumbnail:"https://via.placeholder.com/300x150"}
 ];
 
 const home = document.getElementById("homePage");
 let currentIndex = 0;
 
 /* STORAGE */
-function getViews(i){ return localStorage.getItem("views"+i) || 0; }
-function getLikes(i){ return localStorage.getItem("likes"+i) || 0; }
+function getViews(i){ return localStorage.getItem("v"+i)||0;}
+function getLikes(i){ return localStorage.getItem("l"+i)||0;}
 
 /* LOAD */
 function loadVideos(list){
-  home.innerHTML = "";
+  home.innerHTML="";
   list.forEach((v,i)=>{
-    let div = document.createElement("div");
-    div.className = "video-card";
-    div.innerHTML = `
+    let div=document.createElement("div");
+    div.className="video-card";
+    div.innerHTML=`
       <img src="${v.thumbnail}">
       <div class="video-title">${v.title}</div>
       <div class="video-stats">👁 ${getViews(i)} | ❤️ ${getLikes(i)}</div>
     `;
-    div.onclick = ()=>openAdPage(v,i);
+    div.onclick=()=>openAdPage(v,i);
     home.appendChild(div);
   });
 }
 loadVideos(videos);
 
 /* SEARCH */
-document.getElementById("searchInput").addEventListener("input", function(){
-  let val = this.value.toLowerCase();
-  let filtered = videos.filter(v=>v.title.toLowerCase().includes(val));
-  loadVideos(filtered);
-});
+searchInput.oninput=function(){
+  let val=this.value.toLowerCase();
+  loadVideos(videos.filter(v=>v.title.toLowerCase().includes(val)));
+}
 
 /* OPEN */
 function openAdPage(v,i){
-  currentIndex = i;
-  localStorage.setItem("views"+i, Number(getViews(i))+1);
+  currentIndex=i;
+  localStorage.setItem("v"+i, Number(getViews(i))+1);
 
   home.style.display="none";
   adPage.style.display="block";
+}
 
-  let time=5;
-  watchBtn.disabled=true;
+/* ADS BUTTON LOGIC */
+let ad1=false, ad2=false;
 
-  let countdown=setInterval(()=>{
-    time--;
-    timerText.innerText="⏳ Wait "+time+" sec...";
-    if(time<=0){
-      clearInterval(countdown);
-      watchBtn.disabled=false;
-      timerText.innerText="✅ Ready!";
-    }
-  },1000);
+function showAd1(){
+  document.getElementById("ad1").style.display="block";
+  ad1=true;
+  checkUnlock();
+}
 
-  watchBtn.onclick=()=>{
-    adPage.style.display="none";
-    playerPage.style.display="block";
-    videoFrame.src=v.video;
-    videoTitle.innerText=v.title;
-    updateLike();
+function showAd2(){
+  document.getElementById("ad2").style.display="block";
+  ad2=true;
+  checkUnlock();
+}
+
+function checkUnlock(){
+  if(ad1 && ad2){
+    unlockBtn.disabled=false;
   }
+}
+
+/* UNLOCK */
+unlockBtn.onclick=function(){
+  adPage.style.display="none";
+  playerPage.style.display="block";
+
+  videoFrame.src=videos[currentIndex].video;
+  videoTitle.innerText=videos[currentIndex].title;
+  updateLike();
 }
 
 /* LIKE */
 function likeVideo(){
-  localStorage.setItem("likes"+currentIndex, Number(getLikes(currentIndex))+1);
+  localStorage.setItem("l"+currentIndex, Number(getLikes(currentIndex))+1);
   updateLike();
 }
 function updateLike(){
@@ -249,6 +256,10 @@ function goHome(){
   videoFrame.src="";
   playerPage.style.display="none";
   home.style.display="grid";
+
+  ad1=false; ad2=false;
+  unlockBtn.disabled=true;
+
   loadVideos(videos);
 }
 
